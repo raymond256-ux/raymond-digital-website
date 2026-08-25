@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" role="img" aria-labelledby="pbTitle">
+  <title id="pbTitle">Digital branding project preview</title>
+  <defs>
+    <linearGradient id="pb1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#06B6D4"/>
+      <stop offset="1" stop-color="#10B981"/>
+    </linearGradient>
+    <filter id="pbsh" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#0A2540" flood-opacity="0.16"/>
+    </filter>
+  </defs>
+
+  <rect width="400" height="300" fill="#F4F1FF"/>
+  <circle cx="360" cy="48" r="64" fill="url(#pb1)" opacity="0.12"/>
+  <circle cx="40" cy="252" r="58" fill="#6366F1" opacity="0.09"/>
+
+  <!-- Hexagon logo mark -->
+  <g filter="url(#pbsh)" transform="translate(200 128)">
+    <polygon points="0,-74 64,-37 64,37 0,74 -64,37 -64,-37" fill="url(#pb1)"/>
+    <text x="0" y="17" text-anchor="middle"
+          font-family="'Segoe UI', Arial, sans-serif" font-size="52" font-weight="800" fill="#FFFFFF">R</text>
+  </g>
+
+  <!-- Business cards -->
+  <g filter="url(#pbsh)" transform="rotate(-10 96 208)">
+    <rect x="42" y="184" width="110" height="64" rx="9" fill="#FFFFFF" stroke="#E2E8F0"/>
+    <rect x="56" y="198" width="26" height="26" rx="7" fill="url(#pb1)" opacity="0.9"/>
+    <rect x="90" y="203" width="48" height="7" rx="3.5" fill="#0A2540" opacity="0.85"/>
+    <rect x="90" y="215" width="36" height="6" rx="3" fill="#CBD5E1"/>
+    <rect x="56" y="232" width="60" height="5" rx="2.5" fill="#E2E8F0"/>
+  </g>
+  <g filter="url(#pbsh)" transform="rotate(8 306 210)">
+    <rect x="252" y="186" width="110" height="64" rx="9" fill="#0A2540"/>
+    <rect x="266" y="200" width="22" height="22" rx="6" fill="#22D3EE"/>
+    <rect x="296" y="204" width="46" height="7" rx="3.5" fill="#FFFFFF" opacity="0.9"/>
+    <rect x="296" y="216" width="34" height="6" rx="3" fill="#94A3B8"/>
+    <rect x="266" y="232" width="58" height="5" rx="2.5" fill="#475569"/>
+  </g>
+
+  <!-- Brand colour swatches -->
+  <g>
+    <circle cx="152" cy="272" r="13" fill="#0A2540"/>
+    <circle cx="186" cy="272" r="13" fill="#06B6D4"/>
+    <circle cx="220" cy="272" r="13" fill="#10B981"/>
+    <circle cx="254" cy="272" r="13" fill="#64748B"/>
+  </g>
+  <!-- Sparkles -->
+  <path d="M96 76 l4 10 l10 4 l-10 4 l-4 10 l-4 -10 l-10 -4 l10 -4 z" fill="#6366F1" opacity="0.45"/>
+  <path d="M318 128 l3 7.5 l7.5 3 l-7.5 3 l-3 7.5 l-3 -7.5 l-7.5 -3 l7.5 -3 z" fill="#10B981" opacity="0.55"/>
+</svg>

@@ -1,0 +1,376 @@
+/* ============================================================
+   RAYMOND DIGITAL — site interactions
+   Modules: config, header state, mobile nav, active links,
+   reveal-on-scroll, service modal, form validation + mailto,
+   back-to-top, footer year.
+   Safe to include on any page (all lookups are null-guarded).
+   ============================================================ */
+
+"use strict";
+
+/* ---------- 0. SITE CONFIG ----------------------------------
+   >>> REQUIRED before launch: set your real email address <<<
+   The inquiry form composes a message and opens the visitor's
+   email app addressed to this address.                        */
+const CONFIG = {
+  contactEmail: "", // e.g. "hello@yourdomain.com"
+};
+
+/* ---------- helpers ---------- */
+const $  = (sel, ctx = document) => ctx.querySelector(sel);
+const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
+const prefersReducedMotion =
+  window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* ---------- 1. header scrolled state + back-to-top ---------- */
+const header = $("#site-header");
+const backToTop = $("#back-to-top");
+
+function onScroll() {
+  const y = window.scrollY;
+  if (header) header.classList.toggle("is-scrolled", y > 8);
+  if (backToTop) {
+    if (y > 640) {
+      backToTop.hidden = false;
+      // next frame so the transition plays
+      requestAnimationFrame(() => backToTop.classList.add("show"));
+    } else {
+      backToTop.classList.remove("show");
+    }
+  }
+}
+window.addEventListener("scroll", onScroll, { passive: true });
+onScroll();
+
+if (backToTop) {
+  backToTop.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: prefersReducedMotion ? "auto" : "smooth" });
+  });
+}
+
+/* ---------- 2. mobile navigation ---------- */
+const navToggle = $("#nav-toggle");
+const siteNav = $("#primary-nav");
+
+function setMenu(open) {
+  if (!navToggle || !siteNav) return;
+  document.body.classList.toggle("nav-open", open);
+  navToggle.classList.toggle("is-active", open);
+  navToggle.setAttribute("aria-expanded", String(open));
+  navToggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+}
+
+if (navToggle && siteNav) {
+  navToggle.addEventListener("click", () =>
+    setMenu(!document.body.classList.contains("nav-open"))
+  );
+
+  // close when a nav link or CTA inside the panel is used
+  siteNav.addEventListener("click", (e) => {
+    if (e.target.closest("a")) setMenu(false);
+  });
+
+  // close on Escape / click outside
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && document.body.classList.contains("nav-open")) {
+      setMenu(false);
+      navToggle.focus();
+    }
+  });
+  document.addEventListener("click", (e) => {
+    if (
+      document.body.classList.contains("nav-open") &&
+      !siteNav.contains(e.target) &&
+      !navToggle.contains(e.target)
+    ) {
+      setMenu(false);
+    }
+  });
+}
+
+/* ---------- 3. active section highlight ---------- */
+const navLinks = $$(".site-nav-link").filter((a) => a.hash);
+if ("IntersectionObserver" in window && navLinks.length) {
+  const sections = navLinks
+    .map((a) => $(a.hash))
+    .filter(Boolean);
+
+  const spy = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        navLinks.forEach((a) =>
+          a.classList.toggle("active", a.hash === `#${entry.target.id}`)
+        );
+      });
+    },
+    { rootMargin: "-45% 0px -50% 0px", threshold: 0 }
+  );
+  sections.forEach((s) => spy.observe(s));
+}
+
+/* ---------- 4. reveal-on-scroll (staggered, self-cleaning) ---------- */
+const revealEls = $$(".reveal");
+if (revealEls.length) {
+  if (prefersReducedMotion || !("IntersectionObserver" in window)) {
+    revealEls.forEach((el) => el.classList.add("reveal-in"));
+  } else {
+    const io = new IntersectionObserver(
+      (entries, obs) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const el = entry.target;
+          obs.unobserve(el);
+
+          // stagger up to 6 siblings inside the same container
+          const siblings = $$(".reveal", el.parentElement);
+          const delay = Math.min(Math.max(siblings.indexOf(el), 0), 5) * 70;
+
+          setTimeout(() => {
+            el.classList.add("reveal-in");
+            // once revealed, drop helper classes so component
+            // hover/focus transitions work as designed
+            const finish = () => el.classList.remove("reveal", "reveal-in");
+            el.addEventListener("transitionend", finish, { once: true });
+            setTimeout(finish, 1500); // safety net (e.g. hidden tabs)
+          }, delay);
+        });
+      },
+      { threshold: 0.14, rootMargin: "0px 0px -8% 0px" }
+    );
+    revealEls.forEach((el) => io.observe(el));
+  }
+}
+
+/* ---------- 5. service detail modal ---------- */
+const SERVICE_DATA = {
+  "web-development": {
+    title: "Web Development & Digital Solutions",
+    desc: "Modern, responsive websites and digital tools planned around your goals — designed to look professional, load fast and be easy to maintain.",
+    points: [
+      "Business, personal & organization websites",
+      "Landing pages and online portfolios",
+      "Website updates, maintenance & improvements",
+      "Advice on practical digital tools for your workflow",
+    ],
+  },
+  "ict-support": {
+    title: "ICT & Technical Support",
+    desc: "Dependable help with everyday technology so you and your team stay productive instead of stuck.",
+    points: [
+      "Computer setup, troubleshooting & tune-ups",
+      "Software installation & configuration",
+      "Printer, network & peripheral assistance",
+      "Guidance on safe, sensible tech practices",
+    ],
+  },
+  "data-office-skills": {
+    title: "Data, Microsoft Office & Digital Skills",
+    desc: "Hands-on help with documents, spreadsheets and presentations — plus patient training that builds lasting confidence.",
+    points: [
+      "Word documents, reports & templates",
+      "Excel data entry, cleaning, formulas & charts",
+      "PowerPoint design & presentation polish",
+      "One-on-one or small-group digital skills training",
+    ],
+  },
+  "graphic-design": {
+    title: "Graphic Design & Creative Services",
+    desc: "Clean, purposeful design that makes your brand look established and consistent across every touchpoint.",
+    points: [
+      "Logo design & brand identity basics",
+      "Flyers, posters, brochures & banners",
+      "Business profiles & company documents",
+      "Social media graphics & presentation visuals",
+    ],
+  },
+  "writing-editing": {
+    title: "Content Writing, Editing & Proofreading",
+    desc: "Clear writing and careful editing for business, web and academic content — refined until every word earns its place.",
+    points: [
+      "Website copy, articles & blog content",
+      "Business reports, profiles & proposals",
+      "Thorough proofreading & clarity editing",
+      "Consistent tone, grammar & formatting",
+    ],
+  },
+  "publishing-support": {
+    title: "Research & Academic Publishing Support",
+    desc: "Structured support for researchers and students preparing work for examination or journal submission.",
+    points: [
+      "Thesis & dissertation formatting",
+      "Reference styling (APA, MLA, Harvard & more)",
+      "Journal template preparation & submission checks",
+      "Constructive review feedback before submission",
+    ],
+  },
+  "virtual-assistance": {
+    title: "Virtual Assistance & Administrative Support",
+    desc: "Reliable remote assistance with the daily admin that quietly consumes your working hours.",
+    points: [
+      "Email management & correspondence drafting",
+      "Calendar scheduling & reminders",
+      "Document preparation & data entry",
+      "Ongoing or ad-hoc arrangements available",
+    ],
+  },
+  "research-services": {
+    title: "Research & Information Services",
+    desc: "Focused research and clearly organised information you can act on — saving you hours of searching.",
+    points: [
+      "Topic & market research summaries",
+      "Fact-checking & source verification",
+      "Competitor & industry information briefs",
+      "Organised, easy-to-read reporting",
+    ],
+  },
+};
+
+const modal = $("#service-modal");
+if (modal && typeof modal.showModal === "function") {
+  let currentService = "";
+
+  function openModal(key) {
+    const data = SERVICE_DATA[key];
+    if (!data) return;
+    currentService = key;
+    $("#modal-title").textContent = data.title;
+    $("#modal-desc").textContent = data.desc;
+    $("#modal-list").innerHTML = "";
+    data.points.forEach((p) => {
+      const li = document.createElement("li");
+      li.textContent = p;
+      $("#modal-list").appendChild(li);
+    });
+    modal.showModal();
+  }
+
+  $$("[data-service]").forEach((btn) =>
+    btn.addEventListener("click", () => openModal(btn.dataset.service))
+  );
+
+  const closeModal = () => modal.close();
+  $("#modal-close").addEventListener("click", closeModal);
+  $("#modal-dismiss").addEventListener("click", closeModal);
+
+  // click on backdrop closes the dialog
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) closeModal();
+  });
+
+  // preselect service in the contact form and jump there
+  $("#modal-request").addEventListener("click", () => {
+    const select = $("#cf-service");
+    closeModal();
+    if (select) select.value = currentService;
+    const contact = $("#contact");
+    if (contact) contact.scrollIntoView({ behavior: prefersReducedMotion ? "auto" : "smooth" });
+  });
+}
+
+/* ---------- 6. inquiry form validation + mailto ---------- */
+const form = $("#inquiry-form");
+if (form) {
+  const statusEl = $("#form-status");
+  const fields = {
+    name: { el: $("#cf-name"), err: $("#err-name") },
+    email: { el: $("#cf-email"), err: $("#err-email") },
+    phone: { el: $("#cf-phone"), err: null },
+    service: { el: $("#cf-service"), err: $("#err-service") },
+    message: { el: $("#cf-message"), err: $("#err-message") },
+  };
+
+  const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+  function setError(f, hasError) {
+    if (!f.el) return;
+    f.el.setAttribute("aria-invalid", String(hasError));
+    if (f.err) f.err.hidden = !hasError;
+  }
+
+  function validateField(key) {
+    const f = fields[key];
+    if (!f || !f.el) return true;
+    const v = f.el.value.trim();
+
+    switch (key) {
+      case "name":
+        return pass(v.length >= 2);
+      case "email":
+        return pass(EMAIL_RE.test(v));
+      case "service":
+        return pass(v !== "");
+      case "message":
+        return pass(v.length >= 10);
+      default:
+        return pass(true); // phone is optional
+    }
+
+    function pass(ok) {
+      setError(f, !ok);
+      return ok;
+    }
+  }
+
+  // live re-validation once a field was flagged
+  Object.keys(fields).forEach((key) => {
+    const f = fields[key];
+    if (!f || !f.el) return;
+    f.el.addEventListener("blur", () => validateField(key));
+    f.el.addEventListener("input", () => {
+      if (f.el.getAttribute("aria-invalid") === "true") validateField(key);
+    });
+  });
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    if (!statusEl) return;
+
+    const results = Object.keys(fields).map(validateField);
+    const firstInvalid = Object.values(fields).find(
+      (f) => f.el && f.el.getAttribute("aria-invalid") === "true"
+    );
+    if (firstInvalid) {
+      firstInvalid.el.focus();
+      return;
+    }
+
+    const name = fields.name.el.value.trim();
+    const email = fields.email.el.value.trim();
+    const phone = fields.phone.el.value.trim();
+    const serviceText =
+      fields.service.el.options[fields.service.el.selectedIndex].text;
+    const message = fields.message.el.value.trim();
+
+    const bodyLines = [
+      `Name: ${name}`,
+      `Email: ${email}`,
+      `Phone/WhatsApp: ${phone || "—"}`,
+      `Service needed: ${serviceText}`,
+      "",
+      "Message:",
+      message,
+    ];
+
+    if (!CONFIG.contactEmail) {
+      statusEl.className = "form-status err";
+      statusEl.textContent =
+        "Thank you! Online submission isn't switched on yet — please reach us directly by phone or WhatsApp.";
+      console.warn("Raymond Digital site: set CONFIG.contactEmail in js/main.js to enable the inquiry form.");
+      return;
+    }
+
+    const subject = encodeURIComponent(`Service inquiry — ${serviceText} (${name})`);
+    const body = encodeURIComponent(bodyLines.join("\n"));
+    window.location.href = `mailto:${CONFIG.contactEmail}?subject=${subject}&body=${body}`;
+
+    statusEl.className = "form-status ok";
+    statusEl.textContent =
+      "Your email app should now open with the message ready to send. Thank you!";
+    form.reset();
+  });
+}
+
+/* ---------- 7. footer year ---------- */
+const yearEl = $("#year");
+if (yearEl) yearEl.textContent = new Date().getFullYear();

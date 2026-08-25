@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 540" role="img" aria-labelledby="heroTitle heroDesc">
+  <title id="heroTitle">Raymond Digital — web development and digital solutions</title>
+  <desc id="heroDesc">A stylised website dashboard with analytics chart, code editor, approval badge and support tools.</desc>
+  <defs>
+    <linearGradient id="hg1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#06B6D4"/>
+      <stop offset="1" stop-color="#10B981"/>
+    </linearGradient>
+    <linearGradient id="hg2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#123B70"/>
+      <stop offset="1" stop-color="#071C3C"/>
+    </linearGradient>
+    <linearGradient id="hbar" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0" stop-color="#22D3EE"/>
+      <stop offset="1" stop-color="#0EA5E9"/>
+    </linearGradient>
+    <filter id="hshadow" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="16" stdDeviation="18" flood-color="#0A2540" flood-opacity="0.15"/>
+    </filter>
+    <pattern id="hdots" width="22" height="22" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="2" fill="#0A2540" opacity="0.08"/>
+    </pattern>
+  </defs>
+
+  <!-- Backdrop decoration -->
+  <circle cx="310" cy="285" r="235" fill="url(#hg1)" opacity="0.10"/>
+  <circle cx="310" cy="285" r="168" fill="none" stroke="#0EA5E9" stroke-opacity="0.18" stroke-dasharray="3 9"/>
+  <rect x="452" y="34" width="130" height="120" rx="20" fill="url(#hdots)"/>
+  <rect x="48" y="396" width="150" height="110" rx="20" fill="url(#hdots)"/>
+  <rect x="524" y="368" width="26" height="26" rx="7" fill="url(#hg1)" opacity="0.85" transform="rotate(45 537 381)"/>
+  <circle cx="82" cy="112" r="7" fill="#10B981" opacity="0.7"/>
+  <rect x="30" y="200" width="14" height="14" rx="4" fill="#0EA5E9" opacity="0.35"/>
+
+  <!-- Browser window -->
+  <g filter="url(#hshadow)">
+    <rect x="105" y="85" width="410" height="330" rx="18" fill="#FFFFFF" stroke="#E2E8F0"/>
+  </g>
+  <path d="M105 133 L105 103 Q105 85 123 85 L497 85 Q515 85 515 103 L515 133 Z" fill="url(#hg2)"/>
+  <circle cx="129" cy="109" r="5" fill="#FF6B6B"/>
+  <circle cx="149" cy="109" r="5" fill="#FFD166"/>
+  <circle cx="169" cy="109" r="5" fill="#34D399"/>
+  <rect x="200" y="98" width="200" height="22" rx="11" fill="#FFFFFF" opacity="0.12"/>
+  <circle cx="216" cy="109" r="4.5" fill="none" stroke="#FFFFFF" stroke-width="1.6"/>
+  <path d="M216 111.5 v-3.5 a2.5 2.5 0 0 1 5 0 v3.5 z" fill="#FFFFFF"/>
+  <rect x="486" y="101" width="16" height="16" rx="4" fill="#FFFFFF" opacity="0.15"/>
+
+  <!-- Sidebar -->
+  <rect x="105" y="133" width="112" height="282" fill="#F6F9FC"/>
+  <circle cx="127" cy="163" r="5" fill="url(#hg1)"/>
+  <rect x="140" y="159" width="58" height="8" rx="4" fill="#0A2540" opacity="0.75"/>
+  <circle cx="127" cy="193" r="5" fill="#CBD5E1"/>
+  <rect x="140" y="189" width="52" height="8" rx="4" fill="#E2E8F0"/>
+  <circle cx="127" cy="223" r="5" fill="#CBD5E1"/>
+  <rect x="140" y="219" width="56" height="8" rx="4" fill="#E2E8F0"/>
+  <circle cx="127" cy="253" r="5" fill="#CBD5E1"/>
+  <rect x="140" y="249" width="44" height="8" rx="4" fill="#E2E8F0"/>
+  <rect x="117" y="330" width="88" height="62" rx="10" fill="url(#hg1)" opacity="0.14"/>
+  <rect x="129" y="344" width="50" height="7" rx="3.5" fill="#0EA5E9" opacity="0.65"/>
+  <rect x="129" y="358" width="64" height="7" rx="3.5" fill="#94A3B8" opacity="0.55"/>
+  <rect x="129" y="372" width="40" height="7" rx="3.5" fill="#94A3B8" opacity="0.55"/>
+
+  <!-- Main panel content -->
+  <rect x="237" y="156" width="150" height="16" rx="8" fill="#0A2540"/>
+  <rect x="237" y="182" width="220" height="9" rx="4.5" fill="#E2E8F0"/>
+  <rect x="237" y="198" width="170" height="9" rx="4.5" fill="#E2E8F0"/>
+
+  <!-- Code editor block -->
+  <rect x="237" y="222" width="250" height="104" rx="10" fill="#0A2540"/>
+  <rect x="251" y="238" width="36" height="7" rx="3.5" fill="#22D3EE"/>
+  <rect x="293" y="238" width="58" height="7" rx="3.5" fill="#94A3B8"/>
+  <rect x="265" y="256" width="64" height="7" rx="3.5" fill="#34D399"/>
+  <rect x="335" y="256" width="42" height="7" rx="3.5" fill="#64748B"/>
+  <rect x="265" y="274" width="46" height="7" rx="3.5" fill="#F59E0B"/>
+  <rect x="317" y="274" width="72" height="7" rx="3.5" fill="#94A3B8"/>
+  <rect x="251" y="292" width="80" height="7" rx="3.5" fill="#60A5FA"/>
+  <rect x="337" y="292" width="32" height="7" rx="3.5" fill="#34D399"/>
+  <rect x="251" y="310" width="54" height="7" rx="3.5" fill="#94A3B8"/>
+
+  <!-- CTA button in mock -->
+  <rect x="237" y="342" width="114" height="36" rx="18" fill="url(#hg1)"/>
+  <rect x="260" y="357" width="68" height="6" rx="3" fill="#FFFFFF" opacity="0.92"/>
+
+  <!-- Floating analytics card -->
+  <g filter="url(#hshadow)">
+    <rect x="38" y="308" width="182" height="134" rx="16" fill="#FFFFFF" stroke="#E2E8F0"/>
+  </g>
+  <rect x="56" y="326" width="66" height="8" rx="4" fill="#CBD5E1"/>
+  <rect x="56" y="340" width="42" height="11" rx="5.5" fill="#0A2540"/>
+  <rect x="150" y="336" width="48" height="19" rx="9.5" fill="#ECFDF5"/>
+  <polygon points="166,349 173,340 180,349" fill="#10B981"/>
+  <rect x="58" y="394" width="14" height="28" rx="4" fill="#BAE6FD"/>
+  <rect x="80" y="380" width="14" height="42" rx="4" fill="#7DD3FC"/>
+  <rect x="102" y="364" width="14" height="58" rx="4" fill="#38BDF8"/>
+  <rect x="124" y="348" width="14" height="74" rx="4" fill="url(#hbar)"/>
+  <rect x="146" y="372" width="14" height="50" rx="4" fill="#99F6E4"/>
+  <rect x="176" y="386" width="14" height="36" rx="4" fill="#BAE6FD"/>
+
+  <!-- Floating approval badge -->
+  <g filter="url(#hshadow)">
+    <rect x="452" y="196" width="136" height="58" rx="15" fill="#FFFFFF" stroke="#E2E8F0"/>
+  </g>
+  <circle cx="482" cy="225" r="15" fill="url(#hg1)" opacity="0.16"/>
+  <path d="M474.5 225 l5 5 l10 -10" fill="none" stroke="#0EA5E9" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="506" y="212" width="66" height="8" rx="4" fill="#0A2540" opacity="0.85"/>
+  <rect x="506" y="228" width="46" height="7" rx="3.5" fill="#CBD5E1"/>
+
+  <!-- Floating support chip -->
+  <g filter="url(#hshadow)">
+    <rect x="474" y="330" width="118" height="54" rx="14" fill="#0A2540"/>
+  </g>
+  <polygon points="536,342 520,360 531,360 527,372 545,352 533,352" fill="#22D3EE"/>
+  <rect x="552" y="348" width="28" height="7" rx="3.5" fill="#FFFFFF" opacity="0.85"/>
+  <rect x="552" y="361" width="20" height="6" rx="3" fill="#94A3B8"/>
+
+  <!-- Cursor pointer -->
+  <g transform="translate(322,386)">
+    <path d="M6 6 L6 32 L13 25 L17.5 34 L23 31.5 L18.5 23 L27 21.5 Z"
+          fill="#0A2540" stroke="#FFFFFF" stroke-width="1.6" stroke-linejoin="round"/>
+  </g>
+</svg>

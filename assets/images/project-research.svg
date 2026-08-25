@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" role="img" aria-labelledby="prTitle">
+  <title id="prTitle">Research publication project preview</title>
+  <defs>
+    <linearGradient id="pr1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#06B6D4"/>
+      <stop offset="1" stop-color="#10B981"/>
+    </linearGradient>
+    <filter id="prsh" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#0A2540" flood-opacity="0.16"/>
+    </filter>
+  </defs>
+
+  <rect width="400" height="300" fill="#F0FBFA"/>
+  <circle cx="48" cy="44" r="66" fill="url(#pr1)" opacity="0.12"/>
+  <circle cx="362" cy="256" r="60" fill="#15497F" opacity="0.08"/>
+
+  <!-- Stacked pages behind -->
+  <rect x="128" y="42" width="164" height="216" rx="12" fill="#DBEEFF" transform="rotate(-6 210 150)"/>
+  <rect x="122" y="46" width="164" height="216" rx="12" fill="#EFF6FF" transform="rotate(-3 204 154)"/>
+
+  <!-- Main manuscript -->
+  <g filter="url(#prsh)">
+    <rect x="118" y="50" width="164" height="216" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
+  </g>
+  <rect x="138" y="72" width="96" height="13" rx="6.5" fill="#0A2540"/>
+  <rect x="138" y="94" width="124" height="7" rx="3.5" fill="#CBD5E1"/>
+  <rect x="138" y="108" width="112" height="7" rx="3.5" fill="#E2E8F0"/>
+  <rect x="138" y="122" width="120" height="7" rx="3.5" fill="#E2E8F0"/>
+
+  <!-- Mini chart inside document -->
+  <rect x="138" y="144" width="60" height="46" rx="8" fill="#ECFEFF" stroke="#A5F3FC"/>
+  <rect x="146" y="166" width="9" height="16" rx="2.5" fill="#67E8F9"/>
+  <rect x="160" y="158" width="9" height="24" rx="2.5" fill="#22D3EE"/>
+  <rect x="174" y="150" width="9" height="32" rx="2.5" fill="url(#pr1)"/>
+  <rect x="208" y="146" width="54" height="44" rx="8" fill="#F0FDF4" stroke="#BBF7D0"/>
+  <path d="M214 180 l12 -14 l10 8 l14 -18" fill="none" stroke="#10B981" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <rect x="138" y="202" width="124" height="7" rx="3.5" fill="#E2E8F0"/>
+  <rect x="138" y="216" width="108" height="7" rx="3.5" fill="#E2E8F0"/>
+  <rect x="138" y="236" width="70" height="16" rx="8" fill="#EDFAFF" stroke="#BAE6FD"/>
+
+  <!-- Approval seal -->
+  <circle cx="272" cy="240" r="21" fill="url(#pr1)"/>
+  <path d="M262 240 l7 7 l13 -14" fill="none" stroke="#FFFFFF" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <polygon points="260,258 256,276 266,270" fill="#0891B2"/>
+  <polygon points="284,258 288,276 278,270" fill="#0891B2"/>
+
+  <!-- Magnifier -->
+  <g transform="rotate(18 330 78)">
+    <circle cx="330" cy="70" r="24" fill="rgba(255,255,255,0.75)" stroke="#0EA5E9" stroke-width="5"/>
+    <line x1="348" y1="88" x2="362" y2="102" stroke="#0A2540" stroke-width="6" stroke-linecap="round"/>
+    <path d="M320 66 a11 11 0 0 1 11 -8" fill="none" stroke="#7DD3FC" stroke-width="3" stroke-linecap="round"/>
+  </g>
+</svg>

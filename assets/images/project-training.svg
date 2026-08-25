@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" role="img" aria-labelledby="ptTitle">
+  <title id="ptTitle">ICT training project preview</title>
+  <defs>
+    <linearGradient id="pt1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#06B6D4"/>
+      <stop offset="1" stop-color="#10B981"/>
+    </linearGradient>
+    <linearGradient id="ptscreen" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#103A63"/>
+      <stop offset="1" stop-color="#071C3C"/>
+    </linearGradient>
+    <filter id="ptsh" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#0A2540" flood-opacity="0.16"/>
+    </filter>
+  </defs>
+
+  <rect width="400" height="300" fill="#FFF7ED"/>
+  <circle cx="52" cy="48" r="62" fill="url(#pt1)" opacity="0.13"/>
+  <circle cx="356" cy="252" r="58" fill="#F59E0B" opacity="0.12"/>
+
+  <!-- Monitor -->
+  <g filter="url(#ptsh)">
+    <rect x="88" y="46" width="224" height="158" rx="14" fill="#0A2540"/>
+  </g>
+  <rect x="98" y="56" width="204" height="130" rx="8" fill="url(#ptscreen)"/>
+
+  <!-- Play button on screen -->
+  <circle cx="200" cy="116" r="30" fill="url(#pt1)"/>
+  <polygon points="193,101 217,116 193,131" fill="#FFFFFF"/>
+
+  <!-- Progress bar -->
+  <rect x="116" y="162" width="140" height="7" rx="3.5" fill="#FFFFFF" opacity="0.16"/>
+  <rect x="116" y="162" width="92" height="7" rx="3.5" fill="url(#pt1)"/>
+  <circle cx="208" cy="165.5" r="6" fill="#FFFFFF"/>
+
+  <!-- Stand -->
+  <rect x="188" y="204" width="24" height="22" fill="#123B70"/>
+  <rect x="156" y="226" width="88" height="10" rx="5" fill="#0A2540"/>
+
+  <!-- Certificate badge -->
+  <g filter="url(#ptsh)">
+    <rect x="36" y="196" width="104" height="72" rx="12" fill="#FFFFFF" stroke="#E2E8F0"/>
+  </g>
+  <rect x="52" y="212" width="52" height="9" rx="4.5" fill="#0A2540" opacity="0.85"/>
+  <rect x="52" y="228" width="66" height="6" rx="3" fill="#E2E8F0"/>
+  <rect x="52" y="240" width="56" height="6" rx="3" fill="#E2E8F0"/>
+  <circle cx="118" cy="244" r="12" fill="url(#pt1)"/>
+  <path d="M112.5 244 l4 4 l7 -8" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Knowledge / wifi arcs -->
+  <g fill="none" stroke="#F59E0B" stroke-linecap="round">
+    <path d="M312 118 a26 26 0 0 1 36 0" stroke-width="5"/>
+    <path d="M320 132 a15 15 0 0 1 20 0" stroke-width="5"/>
+  </g>
+  <circle cx="330" cy="145" r="4.5" fill="#F59E0B"/>
+  <!-- Graduation cap -->
+  <g transform="translate(330 66)">
+    <polygon points="0,-16 26,-6 0,4 -26,-6" fill="#0A2540"/>
+    <path d="M-12 0 v10 q12 8 24 0 v-10" fill="#15497F"/>
+    <line x1="26" y1="-6" x2="26" y2="8" stroke="#F59E0B" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="26" cy="11" r="2.6" fill="#F59E0B"/>
+  </g>
+</svg>
