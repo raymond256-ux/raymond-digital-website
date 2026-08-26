@@ -1827,3 +1827,57 @@ body { letter-spacing: -0.004em; }
   .qc-icon { width: 36px; height: 36px; }
   .proof-avatars .avatar--sm { width: 34px; height: 34px; font-size: 0.62rem; }
 }
+
+/* ============================================================
+   21. OFFICIAL LOGO INTEGRATION
+   Uses the web-optimized transparent mark:
+     assets/images/raymond-digital-logo-mark.png
+   (regenerate with: powershell -File _tools\prepare-logo.ps1)
+   Sizing is height-driven so any logo shape stays proportional.
+   ============================================================ */
+
+.logo-wrap {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  height: 46px;
+}
+.logo-img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-height: 100%;
+  max-width: 172px;      /* safety cap for wide horizontal lockups */
+  object-fit: contain;   /* never stretch or crop the logo */
+}
+
+/* Built-in mark: shown only if the logo file is missing */
+.logo-fallback { display: none; color: var(--primary); }
+.logo-wrap.logo-missing .logo-img      { display: none; }
+.logo-wrap.logo-missing .logo-fallback { display: block; width: 46px; height: 46px; }
+
+.brand { gap: 13px; }
+
+/* Optional modifier: hide the text lockup when the logo artwork
+   already contains the full company name */
+.brand--logo-only .brand-text { display: none; }
+
+/* Footer: smaller, quieter emblem that blends into the dark theme
+   (transparent PNG — no plate, no white box) */
+.brand--footer { gap: 12px; }
+.brand--footer .logo-wrap { height: 40px; opacity: 0.96; }
+.brand--footer .logo-wrap.logo-missing .logo-fallback { width: 36px; height: 36px; }
+
+/* Breathing room between logo, tagline and socials in the footer */
+.f-tagline { margin: 20px 0 22px; }
+
+@media (max-width: 900px) {
+  .logo-wrap  { height: 42px; }
+  .brand--footer .logo-wrap { height: 36px; }
+}
+
+@media (max-width: 480px) {
+  .logo-wrap  { height: 36px; }
+  .brand--footer .logo-wrap { height: 32px; }
+  .brand-text strong { font-size: 0.98rem; }
+}

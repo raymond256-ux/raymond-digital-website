@@ -72,6 +72,20 @@ Open `assets/css/style.css` → **section `01. DESIGN TOKENS`**:
 --accent-2:#10B981;   /* green */
 ```
 
+### 🏷️ Official logo
+The site uses your official logo, kept as the master file at **`assets/images/raymond-digital-logo.png`**. A web-optimized derivative is generated from it:
+
+- `assets/images/raymond-digital-logo-mark.png` — auto-cropped, white background removed (transparent), used in the header and footer so the emblem blends cleanly on both light and dark surfaces.
+- If you ever replace the master logo, regenerate the derivative and favicons with two commands (from the project root):
+  ```powershell
+  powershell -ExecutionPolicy Bypass -File _tools\prepare-logo.ps1
+  powershell -ExecutionPolicy Bypass -File _tools\generate-favicons.ps1
+  ```
+  Then hard-refresh the browser (Ctrl+F5).
+- If the derivative is missing, the site automatically falls back to the built-in brand mark — it never looks broken.
+- Logo sizing is height-driven CSS (`.logo-wrap` in `style.css`, section 21): 46px header / 40px footer on desktop, scaling down on mobile. Adjust those heights to taste.
+- If your logo artwork already contains the full company name, add the class `brand--logo-only` to both `<a>` tags with `class="brand"` (header + footer) to hide the text lockup beside it.
+
 ### 🖼️ Images
 Professional royalty-free technology photography is bundled in `assets/images/` (sourced from Unsplash). Drop in your own files using the same names, or update the `src` in `index.html`. Recommended specs:
 
@@ -106,14 +120,14 @@ then remove the submit handler in `assets/js/main.js` (module 08).
 ## 4. Features Included
 
 - ✅ Premium photography hero with floating glass KPI cards and social-proof row
-- ✅ Official Raymond Digital logo mark (single SVG symbol reused in header, footer, watermark + favicon)
+- ✅ Official logo integration (PNG with automatic fallback mark + white footer plate)
 - ✅ Floating WhatsApp chat button with pulse animation and hover tooltip
 - ✅ Reading progress bar at the top of the viewport
 - ✅ Fully responsive (desktop / tablet / mobile with scroll-safe hamburger drawer)
 - ✅ Smooth scrolling navigation with active-section highlighting (scrollspy)
 - ✅ Scroll-reveal animations + animated hero counters
 - ✅ SEO meta tags, Open Graph/Twitter cards, JSON-LD structured data
-- ✅ Favicon support (SVG + PNG fallback + apple-touch icon)
+- ✅ Favicon support generated from the official logo (32px + apple-touch icon)
 - ✅ Accessible markup: skip link, ARIA labels, keyboard focus states, reduced-motion support
 - ✅ Zero dependencies — loads fast, works offline (fonts degrade gracefully)
 
