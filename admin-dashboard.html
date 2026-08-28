@@ -18,7 +18,7 @@
   <link rel="stylesheet" href="assets/css/style.css" />
   <!-- Supabase JavaScript library (must load BEFORE supabase.js) -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script>console.log('Raymond Digital: window.supabase before config:', window.supabase);</script>
+  
   <script src="assets/js/supabase.js"></script>
 
   <!-- Admin Dashboard Scoped Styles -->
@@ -28,7 +28,16 @@
     /* Sidebar */
     .admin-sidebar{width:268px;flex-shrink:0;background:var(--navy-950);color:#E2E8F0;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow:hidden;border-right:1px solid rgba(255,255,255,0.08);}
     .admin-sidebar-brand{padding:28px 24px 22px;border-bottom:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;gap:14px;}
-    .admin-sidebar-logo{width:44px;height:44px;border-radius:12px;background:var(--grad-accent);display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--font-head);font-weight:800;font-size:18px;letter-spacing:-0.02em;flex-shrink:0;}
+    .admin-sidebar-logo{width:44px;height:44px;border-radius:12px;background:var(--grad-accent);display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--font-head);font-weight:800;font-size:18px;letter-spacing:-0.02em;flex-shrink:0;overflow:hidden;position:relative;}
+    .admin-sidebar-logo-img{width:100%;height:100%;object-fit:contain;display:block;}
+    .admin-sidebar-logo-fallback{display:none;position:absolute;inset:0;align-items:center;justify-content:center;font-family:var(--font-head);font-weight:800;font-size:18px;letter-spacing:-0.02em;color:#fff;background:linear-gradient(135deg,#071C3C 0%,#15497F 100%);}
+    .admin-sidebar-logo.is-fallback .admin-sidebar-logo-img{display:none;}
+    .admin-sidebar-logo.is-fallback .admin-sidebar-logo-fallback{display:flex;}
+    /* Modal contact actions */
+    .admin-modal-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px;}
+    .admin-action-btn--contact{padding:8px 14px;border-radius:999px;border:1px solid var(--line);background:#fff;color:var(--ink);font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s;display:inline-flex;align-items:center;gap:6px;text-decoration:none;}
+    .admin-action-btn--contact:hover{background:var(--primary);color:#fff;border-color:var(--primary);}
+    .admin-action-btn--contact:disabled{opacity:.4;cursor:not-allowed;pointer-events:none;}
     .admin-sidebar-brand h2{font-family:var(--font-head);font-size:15px;font-weight:700;color:#fff;line-height:1.1;margin:0;}
     .admin-sidebar-brand p{font-size:12px;color:#94A3B8;margin:2px 0 0;font-weight:500;}
     .admin-sidebar-nav{flex:1;padding:18px 14px;overflow-y:auto;}
@@ -233,6 +242,8 @@
       const menuToggle = document.getElementById('adminMenuToggle');
       const sidebar = document.getElementById('adminSidebar');
       const sidebarBackdrop = document.getElementById('adminSidebarBackdrop');
+      const modalEmailLink = document.getElementById('modalEmailLink');
+      const modalPhoneLink = document.getElementById('modalPhoneLink');
 
       function showElement(el) { if (el) el.style.display = ''; }
       function hideElement(el) { if (el) el.style.display = 'none'; }
@@ -322,11 +333,34 @@
         document.getElementById('modalStatus').textContent = statusLabel(getStatus(row));
         document.getElementById('modalStatus').className = 'admin-status-badge status-'+getStatus(row);
         document.getElementById('modalMessage').textContent = row.message || '—';
+        // Contact actions
+        if (modalEmailLink) {
+          const email = (row.email || '').trim();
+          if (email && email.includes('@')) {
+            modalEmailLink.href = 'mailto:' + encodeURIComponent(email);
+            modalEmailLink.style.display = '';
+          } else {
+            modalEmailLink.href = 'mailto:';
+            modalEmailLink.style.display = 'none';
+          }
+        }
+        if (modalPhoneLink) {
+          const phone = (row.phone || '').trim();
+          if (phone && phone.length >= 7) {
+            // Normalize phone: strip non-digits, add country code if needed
+            const digits = phone.replace(/\D/g, '');
+            modalPhoneLink.href = 'tel:' + digits;
+            modalPhoneLink.style.display = '';
+          } else {
+            modalPhoneLink.href = 'tel:';
+            modalPhoneLink.style.display = 'none';
+          }
+        }
         modal.classList.add('open'); modalBackdrop.classList.add('open'); modal.setAttribute('aria-hidden','false');
         document.body.style.overflow='hidden';
       }
       function closeModal(){ modal.classList.remove('open'); modalBackdrop.classList.remove('open'); modal.setAttribute('aria-hidden','true'); document.body.style.overflow=''; }
-      if (modal) modal.querySelector('[data-close-modal]').addEventListener('click', closeModal);
+      if (modal) modal.querySelectorAll('[data-close-modal]').forEach(function(btn){ btn.addEventListener('click', closeModal); });
       if (modalBackdrop) modalBackdrop.addEventListener('click', closeModal);
       document.addEventListener('keydown', function(e){ if(e.key==='Escape' && modal.classList.contains('open')) closeModal(); });
 
@@ -443,7 +477,10 @@
     <div class="admin-sidebar-backdrop" id="adminSidebarBackdrop"></div>
     <aside class="admin-sidebar" id="adminSidebar" aria-label="Admin navigation">
       <div class="admin-sidebar-brand">
-        <div class="admin-sidebar-logo">RD</div>
+        <div class="admin-sidebar-logo">
+          <img class="admin-sidebar-logo-img" src="assets/images/raymond-digital-logo-mark.png" alt="Raymond Digital" onerror="this.parentNode.classList.add('is-fallback')" />
+          <div class="admin-sidebar-logo-fallback">RD</div>
+        </div>
         <div>
           <h2>Raymond Digital</h2>
           <p>ICT &amp; Business Solutions</p>
@@ -606,6 +643,12 @@
           <div class="admin-detail"><label>Date</label><div id="modalDate">—</div></div>
           <div class="admin-detail"><label>Status</label><div><span id="modalStatus" class="admin-status-badge status-new">NEW</span></div></div>
           <div class="admin-detail admin-detail--full"><label>Complete message</label><div id="modalMessage" class="admin-detail-msg">—</div></div>
+          </div>
+          <div class="admin-modal-actions" id="modalActions">
+            <a class="admin-action-btn--contact" id="modalEmailLink" href="mailto:" aria-label="Email client"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>Email Client</a>
+            <a class="admin-action-btn--contact" id="modalPhoneLink" href="tel:" aria-label="Call client"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.7c.43 2.06.7 4.08 1 6.02a2 2 0 0 1-.47 2.19L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.19-.47c1.94.3 3.96.57 6.02 1a2 2 0 0 1 1.7 2z"/></svg>Call Client</a>
+            <button class="admin-action-btn--contact" data-close-modal aria-label="Close" style="margin-left:auto;">Close</button>
+          </div>
         </div>
       </div>
     </div>
