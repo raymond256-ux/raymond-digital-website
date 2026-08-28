@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Raymond Digital — Admin Login</title>
+  <meta name="description" content="Admin area for Raymond Digital — ICT & Business Solutions" />
+
+  <!-- SEO META TAGS -->
+  <meta name="author" content="Raymond Digital" />
+  <meta name="robots" content="noindex, nofollow" />
+
+  <!-- OPEN GRAPH / SOCIAL SHARING -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Raymond Digital | ICT & Business Solutions" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Raymond Digital — Admin Login" />
+  <meta property="og:description" content="Admin area for Raymond Digital — ICT & Business Solutions" />
+  <meta name="twitter:card" content="summary" />
+
+  <!-- FAVICON SUPPORT -->
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png" />
+
+  <!-- FONTS -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet" />
+
+<!-- STYLESHEET -->
+  <link rel="stylesheet" href="assets/css/style.css" />
+
+ <!-- Supabase JavaScript library -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<!-- Raymond Digital Supabase configuration -->
+<script src="assets/js/supabase.js"></script>
+</head>
+<body>
+  <!-- Skip link for accessibility -->
+  <a href="#mainContent" class="skip-link">Skip to admin dashboard</a>
+
+  <main id="mainContent" aria-labelledby="adminLoginTitle">
+    <div class="page-container">
+      <section class="auth-section min-vh-100 d-flex align-items-center justify-center"
+               style="background: var(--navy-950); color: var(--ink);">
+        <div class="container">
+          <div class="row justify-content-center w-100 max-width-max">
+            <div class="col-12 col-md-10 col-lg-8 col-xl-6">
+              <div class="card card-auth w-100 max-width-420">
+                <div class="card-body p-0">
+                  <div class="row no-gutters w-100">
+                    <div class="col-12 text-center text-md-start pt-5 pt-md-0">
+                      <h1 id="adminLoginTitle" class="auth-heading mb-3">
+                        Raymond Digital
+                      </h1>
+                      <p class="auth-subheading mb-0">ICT & Business Solutions</p>
+                    </div>
+                  </div>
+                  <div class="card-form w-100">
+                    <form id="adminLoginForm" novalidate>
+                      <div class="form-group mb-3">
+                        <label for="adminEmail" class="form-label">Email address</label>
+                        <input
+                          type="email"
+                          class="form-control form-control-auth"
+                          id="adminEmail"
+                          name="email"
+                          placeholder="e.g. admin@raymonddigital.com"
+                          autocomplete="email"
+                          required
+                        />
+                      </div>
+                      <div class="form-group mb-4">
+                        <label for="adminPassword" class="form-label">Password</label>
+                        <input
+                          type="password"
+                          class="form-control form-control-auth"
+                          id="adminPassword"
+                          name="password"
+                          placeholder="••••••••"
+                          autocomplete="current-password"
+                          required
+                        />
+                      </div>
+                      <button
+                        type="submit"
+                        class="btn btn-primary w-100 mb-2"
+                        id="adminLoginBtn"
+                      >
+                        Sign in
+                      </button>
+                      <p class="text-center small mt-3">
+                        Don't have an account?
+                        <a href="mailto:admin@raymonddigital.com"
+                          >Contact administrator</a
+                        >
+                      </p>
+                    </form>
+                    <div id="adminAuthStatus" class="text-center small mt-3"
+                         style="font-size: 0.85rem; display: none;">
+                      <span id="adminStatusText"></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Optional: show a subtle version of the hero visual for branding -->
+      <div class="auth-hero-bg">
+        <div class="container">
+          <div class="row align-items-center">
+            <div class="col-12 text-center">
+              <svg class="auth-hero-svg mb-3" aria-hidden="true">
+                <use href="#i-network" width="48" height="48" />
+              </svg>
+              <p class="auth-hero-text small">
+                Admin Area — ICT & Business Solutions
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer on auth page (minimal) -->
+    <footer class="page-footer mt-auto small"
+            style="color: var(--muted); border-top: 1px solid var(--line);">
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+            <p>
+              Raymond Digital — ICT & Business Solutions&nbsp;&nbsp;|&nbsp;&nbsp;
+              <a href="mailto:raymonddigitalx@gmail.com">Contact</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    // ============================================================
+    // Admin Login Form Handling
+    // ============================================================
+    (function () {
+      'use strict';
+
+      const form = document.getElementById('adminLoginForm');
+      const loginBtn = document.getElementById('adminLoginBtn');
+      const statusBox = document.getElementById('adminAuthStatus');
+      const statusText = document.getElementById('adminStatusText');
+      const emailInput = document.getElementById('adminEmail');
+      const passwordInput = document.getElementById('adminPassword');
+
+      if (!form) return;
+
+      form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+
+        const email = emailInput.value.trim();
+        const password = passwordInput.value.trim();
+
+        // Clear previous status
+        statusBox.style.display = 'none';
+        statusText.textContent = '';
+        loginBtn.disabled = true;
+        loginBtn.textContent = 'Signing in…';
+
+        try {
+          // Use the existing raymondSupabase client (already initialized
+          // in assets/js/supabase.js and re-initialized above)
+          const { data, error } = await raymondSupabase.auth.signInWithPassword({
+            email,
+            password,
+          });
+
+          if (error) {
+            statusText.textContent = 'Invalid email or password. Try again.';
+            statusBox.style.display = 'block';
+            statusBox.className = 'form-status show bad';
+            loginBtn.disabled = false;
+            loginBtn.textContent = 'Sign in';
+            return;
+          }
+
+          // Log the session data for debugging
+          console.log('Raymond Digital: signInWithPassword succeeded', data);
+          console.log('Raymond Digital: session from signInWithPassword', data.session);
+
+          // Successful login — redirect to dashboard
+          // The session cookie will be set by Supabase; the next page load
+          // will check it and show the dashboard.
+          console.log('Raymond Digital: Redirecting to admin-dashboard.html');
+          window.location.href = 'admin-dashboard.html';
+        } catch (err) {
+          statusText.textContent =
+            'Unable to sign in. Please check your connection and try again.';
+          console.error('Raymond Digital: signInWithPassword error', err);
+          statusBox.style.display = 'block';
+          statusBox.className = 'form-status show bad';
+          loginBtn.disabled = false;
+          loginBtn.textContent = 'Sign in';
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

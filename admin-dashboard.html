@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Raymond Digital — Admin Dashboard</title>
+  <meta name="description" content="Admin dashboard for Raymond Digital — ICT & Business Solutions" />
+
+  <!-- SEO META TAGS -->
+  <meta name="author" content="Raymond Digital" />
+  <meta name="robots" content="noindex" />
+
+  <!-- OPEN GRAPH / SOCIAL SHARING -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Raymond Digital | ICT & Business Solutions" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Raymond Digital — Admin Dashboard" />
+  <meta name="twitter:card" content="summary" />
+
+  <!-- FAVICON SUPPORT -->
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png" />
+
+  <!-- FONTS -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet" />
+
+<!-- STYLESHEET -->
+  <link rel="stylesheet" href="assets/css/style.css" />
+
+  <!-- Supabase client — initialized by assets/js/supabase.js -->
+  <script src="assets/js/supabase.js"></script>
+
+    // ============================================================
+    // Dashboard Session Check & Initialization
+    // ============================================================
+    document.addEventListener('DOMContentLoaded', function () {
+      'use strict';
+
+      var raymondSupabase = window.raymondSupabase;
+
+      // Check for a valid Supabase Auth session
+      raymondSupabase.auth.getSession().then(function (data) {
+        var session = data.session;
+        
+        // Log session data for debugging
+        console.log('Raymond Digital: getSession result', data);
+        console.log('Raymond Digital: session object', session);
+        
+        if (!session) {
+          // No authenticated session — redirect to login page
+          console.log('Raymond Digital: No session found, redirecting to admin.html');
+          window.location.href = 'admin.html';
+          return;
+        }
+
+        // Session exists — proceed with dashboard initialization
+        console.log('Raymond Digital: Session found, proceeding with dashboard');
+
+      // ============================================================
+      // Rest of Dashboard Logic
+      // ============================================================
+      var logoutBtn = document.getElementById('dashboardLogout');
+      var refreshBtn = document.getElementById('dashboardRefresh');
+      var statusText = document.getElementById('dashboardStatus');
+      var totalEnqEl = document.getElementById('totalEnquiries');
+      var newEnqEl = document.getElementById('newEnquiries');
+      var enquiriesTable = document.getElementById('enquiriesTable');
+      var enquiriesTbody = document.getElementById('enquiriesTbody');
+      var refreshSpinner = document.getElementById('refreshSpinner');
+
+      // ... (rest of the dashboard logic continues below)
+    });
+  </script>
+
+      // -----------------------------------------------------------------
+      // Elements
+      // -----------------------------------------------------------------
+      var logoutBtn = document.getElementById('dashboardLogout');
+      var refreshBtn = document.getElementById('dashboardRefresh');
+      var statusText = document.getElementById('dashboardStatus');
+      var totalEnqEl = document.getElementById('totalEnquiries');
+      var newEnqEl = document.getElementById('newEnquiries');
+      var enquiriesTable = document.getElementById('enquiriesTable');
+      var enquiriesTbody = document.getElementById('enquiriesTbody');
+      var refreshSpinner = document.getElementById('refreshSpinner');
+
+      // -----------------------------------------------------------------
+      // Show/hide helpers
+      // -----------------------------------------------------------------
+      function showElement(el) { el.style.display = ''; }
+      function hideElement(el) { el.style.display = 'none'; }
+
+      // -----------------------------------------------------------------
+      // Fetch enquiries from Supabase contact_messages table
+      // -----------------------------------------------------------------
+      async function loadEnquiries() {
+        if (!raymondSupabase) {
+          statusText.textContent = 'Supabase client not available.';
+          return;
+        }
+
+        hideElement(enquiriesTable);
+        showElement(statusText);
+        statusText.textContent = 'Loading enquiries…';
+        showElement(refreshSpinner);
+        hideElement(refreshBtn);
+
+        try {
+          // Attempt a SELECT. If RLS does not allow anonymous/unauthenticated
+          // access, Supabase will return an error. We catch it and display
+          // a helpful message rather than breaking the dashboard.
+          var { data, error } = await raymondSupabase
+            .from('contact_messages')
+            .select('*')
+            // Order by most recent first
+            .order('created_at', { ascending: false });
+
+          if (error) {
+            // RLS error — show informative message; the admin will need to
+            //  should
+            // 網頁
+            statusText (RLS) {
+              statusText.textContent =
+              'Unable to load enquiries. Supabase Row Level Security (RLS) is ' +
+              'blocking the SELECT on contact_messages. ' +
+              'An authenticated/admin SELECT policy needs to be created in ' +
+              'Supabase for the ' +
+              rayndSupabase.auth.getUser().then(u => u?.email ?? 'admin') +
+              ' account. ' +
+              'See docs/ADMIN-ARCHITECTURE.md for the required policy.'
+              ;
+              return;
+            }
+
+          // -----------------------------------------------------------------
+          // Render statistics
+          // -----------------------------------------------------------------
+          var total = data ? data.length : 0;
+
+          // Count "new" status entries — the contact form inserts status: "new"
+          var newCount = 0;
+          if (data && data.length > 0) {
+            data.forEach(function (row) {
+              if (row.status === 'new') newCount++;
+            });
+          }
+
+          totalEnqEl.textContent = total;
+          newEnqEl.textContent = newCount;
+
+          // -----------------------------------------------------------------
+          // Render table
+          // -----------------------------------------------------------------
+          if (!data || data.length === 0) {
+            enquiriesTbody.innerHTML =
+              '<tr><td class="text-center" colspan="7">No enquiries found.</td></tr>';
+            showElement(enquiriesTable);
+            hideElement(statusText);
+            return;
+          }
+
+          enquiriesTbody.innerHTML = '';
+          data.forEach(function (row) {
+            var created = row.created_at
+              ? new Date(row.created_at).toLocaleString()
+              : '—';
+
+            var tr = document.createElement('tr');
+            tr.innerHTML =
+              '<td>' +
+              (row.name || '—') +
+              '</td>' +
+              '<td>' +
+              (row.email || '—') +
+              '</td>' +
+              '<td>' +
+              (row.phone || '—') +
+              '</td>' +
+              '<td>' +
+              (row.service || '—') +
+              '</td>' +
+              '<td title="' +
+              (row.message || '').substring(0, 80) +
+              '">' +
+              (row.message ? row.message.substring(0, 30) + '…' : '—') +
+              '</td>' +
+              '<td>' +
+              created +
+              '</td>' +
+              '<td>' +
+              '<span class="status-badge status-' +
+              (row.status || 'new') +
+              '">' +
+              (row.status || 'new') +
+              '</span>' +
+              '</td>';
+            enquiriesTbody.appendChild(tr);
+          });
+
+          showElement(enquiriesTable);
+          hideElement(statusText);
+        } catch (err) {
+          statusText.textContent =
+            'Error loading enquiries. See console for details.';
+          console.error('Raymond Digital: Dashboard enquiry load error:', err);
+        } finally {
+          hideElement(refreshSpinner);
+          showElement(refreshBtn);
+        }
+      }
+
+      // -----------------------------------------------------------------
+      // Logout
+      // -----------------------------------------------------------------
+      if (logoutBtn) {
+        logoutBtn.addEventListener('click', async function () {
+          try {
+            await raymondSupabase.auth.signOut();
+            window.location.href = 'admin.html';
+          } catch (err) {
+            console.error('Raymond Digital: Sign out error:', err);
+            window.location.href = 'admin.html';
+          }
+        });
+      }
+
+      // -----------------------------------------------------------------
+      // Refresh button
+      // -----------------------------------------------------------------
+      if (refreshBtn) {
+        refreshBtn.addEventListener('click', loadEnquiries);
+      }
+
+      // Initial load
+      loadEnquiries();
+    });
+  </script>
+
+  <script>
+    // ============================================================
+    // Raymond Digital - Admin Dashboard Authentication & Logic
+    // ============================================================
+    document.addEventListener('DOMContentLoaded', async function () {
+      'use strict';
+
+      const raymondSupabase = window.raymondSupabase;
+
+      if (!raymondSupabase) {
+        console.error('Raymond Digital: Supabase client is not available.');
+        return;
+      }
+
+      let dashboardInitialized = false;
+      let redirecting = false;
+
+      // ------------------------------------------------------------
+      // Authentication / session check
+      // ------------------------------------------------------------
+      async function checkSession() {
+        try {
+          console.log('Raymond Digital: Checking Supabase session...');
+
+          const { data, error } = await raymondSupabase.auth.getSession();
+
+          console.log('Raymond Digital: getSession result', data);
+          console.log(
+            'Raymond Digital: session object',
+            data ? data.session : null
+          );
+
+          if (error) {
+            console.error('Raymond Digital: getSession error', error);
+            return false;
+          }
+
+          if (!data || !data.session) {
+            console.log(
+              'Raymond Digital: No session found, redirecting to admin.html'
+            );
+
+            if (!redirecting) {
+              redirecting = true;
+              window.location.replace('admin.html');
+            }
+
+            return false;
+          }
+
+          console.log(
+            'Raymond Digital: Session found, proceeding with dashboard',
+            data.session.user ? data.session.user.email : ''
+          );
+
+          return true;
+        } catch (err) {
+          console.error('Raymond Digital: Session check failed', err);
+
+          if (!redirecting) {
+            redirecting = true;
+            window.location.replace('admin.html');
+          }
+
+          return false;
+        }
+      }
+
+      // ------------------------------------------------------------
+      // Elements
+      // ------------------------------------------------------------
+      const logoutBtn = document.getElementById('dashboardLogout');
+      const refreshBtn = document.getElementById('dashboardRefresh');
+      const statusText = document.getElementById('dashboardStatus');
+      const totalEnqEl = document.getElementById('totalEnquiries');
+      const newEnqEl = document.getElementById('newEnquiries');
+      const enquiriesTable = document.getElementById('enquiriesTable');
+      const enquiriesTbody = document.getElementById('enquiriesTbody');
+      const refreshSpinner = document.getElementById('refreshSpinner');
+
+      function showElement(el) {
+        if (el) el.style.display = '';
+      }
+
+      function hideElement(el) {
+        if (el) el.style.display = 'none';
+      }
+
+      // ------------------------------------------------------------
+      // Fetch enquiries
+      // ------------------------------------------------------------
+      async function loadEnquiries() {
+        if (!raymondSupabase || !enquiriesTbody) return;
+
+        showElement(statusText);
+        statusText.textContent = 'Loading enquiries…';
+        showElement(refreshSpinner);
+        hideElement(refreshBtn);
+        hideElement(enquiriesTable);
+
+        try {
+          const { data, error } = await raymondSupabase
+            .from('contact_messages')
+            .select('*')
+            .order('created_at', { ascending: false });
+
+          if (error) {
+            console.error(
+              'Raymond Digital: Dashboard enquiry query error:',
+              error
+            );
+
+            statusText.textContent =
+              'Unable to load enquiries. Please check the Supabase permissions for the authenticated admin account.';
+            return;
+          }
+
+          const total = data ? data.length : 0;
+          let newCount = 0;
+
+          if (data) {
+            data.forEach(function (row) {
+              if (row.status === 'new') newCount++;
+            });
+          }
+
+          if (totalEnqEl) totalEnqEl.textContent = total;
+          if (newEnqEl) newEnqEl.textContent = newCount;
+
+          if (!data || data.length === 0) {
+            enquiriesTbody.innerHTML =
+              '<tr><td class="text-center" colspan="7">No enquiries found.</td></tr>';
+            showElement(enquiriesTable);
+            hideElement(statusText);
+            return;
+          }
+
+          enquiriesTbody.innerHTML = '';
+
+          data.forEach(function (row) {
+            const created = row.created_at
+              ? new Date(row.created_at).toLocaleString()
+              : '—';
+
+            const tr = document.createElement('tr');
+
+            tr.innerHTML =
+              '<td>' + (row.name || '—') + '</td>' +
+              '<td>' + (row.email || '—') + '</td>' +
+              '<td>' + (row.phone || '—') + '</td>' +
+              '<td>' + (row.service || '—') + '</td>' +
+              '<td title="' +
+              (row.message || '').substring(0, 80) +
+              '">' +
+              (row.message
+                ? row.message.substring(0, 30) + '…'
+                : '—') +
+              '</td>' +
+              '<td>' + created + '</td>' +
+              '<td><span class="status-badge status-' +
+              (row.status || 'new') +
+              '">' +
+              (row.status || 'new') +
+              '</span></td>';
+
+            enquiriesTbody.appendChild(tr);
+          });
+
+          showElement(enquiriesTable);
+          hideElement(statusText);
+        } catch (err) {
+          console.error(
+            'Raymond Digital: Dashboard enquiry load error:',
+            err
+          );
+
+          statusText.textContent =
+            'Error loading enquiries. See the browser console for details.';
+        } finally {
+          hideElement(refreshSpinner);
+          showElement(refreshBtn);
+        }
+      }
+
+      // ------------------------------------------------------------
+      // Logout
+      // ------------------------------------------------------------
+      if (logoutBtn) {
+        logoutBtn.addEventListener('click', async function () {
+          try {
+            console.log('Raymond Digital: Signing out...');
+
+            const { error } = await raymondSupabase.auth.signOut();
+
+            if (error) {
+              console.error(
+                'Raymond Digital: Sign out error:',
+                error
+              );
+            }
+
+            window.location.replace('admin.html');
+          } catch (err) {
+            console.error(
+              'Raymond Digital: Sign out exception:',
+              err
+            );
+
+            window.location.replace('admin.html');
+          }
+        });
+      }
+
+      // ------------------------------------------------------------
+      // Refresh
+      // ------------------------------------------------------------
+      if (refreshBtn) {
+        refreshBtn.addEventListener('click', loadEnquiries);
+      }
+
+      // ------------------------------------------------------------
+      // Authentication state listener
+      // ------------------------------------------------------------
+      raymondSupabase.auth.onAuthStateChange(function (event, session) {
+        console.log(
+          'Raymond Digital: Auth state changed:',
+          event,
+          session
+        );
+
+        if (
+          event === 'SIGNED_OUT' ||
+          (event === 'TOKEN_EXPIRED' && !session)
+        ) {
+          if (!redirecting) {
+            redirecting = true;
+            window.location.replace('admin.html');
+          }
+        }
+      });
+
+      // ------------------------------------------------------------
+      // Initialize dashboard only after authentication is confirmed
+      // ------------------------------------------------------------
+      const authenticated = await checkSession();
+
+      if (!authenticated) return;
+
+      if (dashboardInitialized) return;
+      dashboardInitialized = true;
+
+      console.log(
+        'Raymond Digital: Authentication confirmed. Initializing dashboard.'
+      );
+
+      await loadEnquiries();
+
+      window.__RAAYDASH_READY = true;
+
+      console.log('Raymond Digital: Dashboard initialization complete.');
+    });
+  </script>
+
+</head>
+<body>
+  <!-- Skip link for accessibility -->
+  <a href="#mainContent" class="skip-link">Skip to dashboard content</a>
+
+  <main id="mainContent" aria-labelledby="adminDashboardTitle">
+    <div class="page-container">
+      <section class="dashboard-layout min-vh-100">
+        <!-- Sidebar Navigation -->
+        <div class="dashboard-sidebar">
+          <div class="sidebar-brand">
+            <svg class="sidebar-brand-icon mb-3" aria-hidden="true">
+              <use href="#i-network" width="32" height="32" /></svg
+            ><span>Raymond Digital</span>
+          </div>
+          <nav class="sidebar-nav">
+            <ul class="nav nav-sidebar">
+              <li class="nav-item active">
+                <a class="nav-link" href="#overview">
+                  <svg class="nav-icon mb-2" aria-hidden="true">
+                    <use href="#i-chart" width="18" height="18" /></svg
+                  ><span>Overview</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#enquiries">
+                  <svg class="nav-icon mb-2" aria-hidden="true">
+                    <use href="#i-mail" width="18" height="18" /></svg
+                  ><span>Enquiries</span>
+                </a>
+              </li>
+              <!-- Future sections can be added here -->
+              <!-- <li class="nav-item">
+                <a class="nav-link" href="#clients">
+                  <svg class="nav-icon mb-2" aria-hidden="true">
+                    <use href="#i-users" width="18" height="18" /></svg
+                  ><span>Clients</span>
+                </a>
+              </li> -->
+            </ul>
+          </nav>
+        </div>
+
+        <!-- Main Dashboard Content -->
+        <div class="dashboard-content p-4">
+          <!-- Dashboard Header / Stats Overview -->
+          <header class="dashboard-header mb-4" id="overview">
+            <h2 id="adminDashboardTitle" class="dashboard-title">
+              Admin Dashboard
+            </h2>
+          </header>
+
+          <!-- Stats Cards Row -->
+          <div class="row mb-4 g-3" id="statsCards">
+            <div class="col-12 col-md-6 col-lg-3">
+              <div class="card card-stat">
+                <div class="card-body">
+                  <div class="stat-value" id="totalEnquiries">0</div>
+                  <h6 class="stat-label text-muted">Total Enquiries</h6>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-3">
+              <div class="card card-stat">
+                <div class="card-body">
+                  <div class="stat-value" id="newEnquiries">0</div>
+                  <h6 class="stat-label text-muted">New Enquiries</h6>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Enquiries Listing Section -->
+          <section class="card" id="enquiries">
+            <div class="card-header d-flex justify-content-between align-items-center">
+              <h3 class="card-title mb-0">Recent Enquiries</h3>
+              <button
+                id="dashboardRefresh"
+                class="btn btn-link text-secondary small"
+                type="button"
+                aria-label="Refresh enquiries"
+              >
+                <svg class="svg-icon svg-icon-sm mb-n2" aria-hidden="true">
+                  <use href="#i-refresh" width="16" height="16" /></svg
+                >
+                Refresh
+              </button>
+              <span id="dashboardStatus" class="small text-muted"></span>
+            </div>
+            <div class="card-body p-0">
+              <div class="table-responsive">
+                <table class="table table-sm mb-0">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Phone</th>
+                      <th>Service</th>
+                      <th>Message</th>
+                      <th>Date</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="enquiriesTbody">
+                    <!-- Rows injected by JavaScript -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <!-- Logout area at bottom of main content -->
+        <footer class="dashboard-footer mt-auto small"
+                style="color: var(--muted); border-top: 1px solid var(--line);">
+          <div class="container">
+            <div class="row">
+              <div class="col-12">
+                <p>
+                  Raymond Digital — Admin Area&nbsp;&nbsp;|&nbsp;&nbsp;
+                  <a href="mailto:raymonddigitalx@gmail.com">Contact</a>
+                </p>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </section>
+    </main>
+  </body>
+</html>

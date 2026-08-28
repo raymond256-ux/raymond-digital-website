@@ -86,6 +86,12 @@ The site uses your official logo, kept as the master file at **`assets/images/ra
 - Logo sizing is height-driven CSS (`.logo-wrap` in `style.css`, section 21): 46px header / 40px footer on desktop, scaling down on mobile. Adjust those heights to taste.
 - If your logo artwork already contains the full company name, add the class `brand--logo-only` to both `<a>` tags with `class="brand"` (header + footer) to hide the text lockup beside it.
 
+### 📊 Trust statistics, blog & portfolio buttons
+- The dark **statistics band** after the hero (`#trust`) uses animated counters. Edit each number via its `data-count="40"` attribute (and the `<em>+</em>` suffix) in `index.html` — no JavaScript changes needed.
+- The **Blog** section is a "coming soon" preview with three placeholder articles. When real posts exist, replace the cards with links — or point the nav's Blog item to an external blog URL.
+- Portfolio **"View Project"** buttons currently link to `#contact`. Swap each `href` for a real case-study URL when you have one.
+- The **hero** is now a dark premium design with floating tech chips (`data-parallax` attributes control mouse-parallax depth). The header is transparent over it and turns to frosted white glass on scroll — both behaviors live in `style.css` section 25.
+
 ### 🖼️ Images
 Professional royalty-free technology photography is bundled in `assets/images/` (sourced from Unsplash). Drop in your own files using the same names, or update the `src` in `index.html`. Recommended specs:
 
@@ -102,18 +108,43 @@ Professional royalty-free technology photography is bundled in `assets/images/` 
 The original custom SVG illustrations (`hero-illustration.svg`, `about-illustration.svg`, `project-*.svg`) are kept in the same folder as lightweight offline fallbacks — delete them if you no longer need them.
 
 ### 📧 Contact details & social links
-Search `index.html` for these TODOs:
-1. **Email** — find `raymonddigitalx@gmail.com` (appears in the contact section, footer, and JS `EMAIL_TO` constant in `assets/js/main.js`).
-2. **WhatsApp number** — find `256700000000` in the floating WhatsApp button near the bottom of `index.html`. Replace with your real number (country code + number, no `+`, e.g. `256772123456`). The prefilled chat message can be edited in the same link.
-3. **Social links** — four `<a href="#">` placeholders in the Contact section + Footer (LinkedIn, Facebook, Instagram, WhatsApp). Replace each `#` with your profile URL.
-4. **Domain** — update the commented `<link rel="canonical">` and the Open Graph URLs once the site is live.
+All business contact channels are now configured and live:
+- **WhatsApp** — `+256 765 674 633` (`https://wa.me/256765674633`), wired into the hero CTA, contact card, consultation button, footer and floating chat button.
+- **Email** — `raymonddigitalx@gmail.com` (contact section, footer, and the `EMAIL_TO` constant in `assets/js/main.js`).
+- **Social profiles** — Facebook, Instagram and LinkedIn linked in the contact section, footer, and structured data.
+- To change any of these later, search `index.html` for the old value (e.g. `256765674633`) and replace all occurrences.
+- **Domain** — update the commented `<link rel="canonical">` and the Open Graph URLs once the site is live.
 
-### 📬 Making the contact form send real emails
-The form currently validates input and opens the visitor's email app (mailto). For serverless delivery straight to your inbox, sign up free at [Formspree](https://formspree.io) (or use Netlify Forms) and add to the `<form>` tag:
-```html
-action="https://formspree.io/f/YOUR_FORM_ID" method="POST"
-```
-then remove the submit handler in `assets/js/main.js` (module 08).
+### 📬 Contact form delivery (Formspree — 10-minute setup, no backend)
+
+The enquiry form collects: **Full Name · Email · Phone/WhatsApp · Service · Budget (optional) · Message**, and is wired for [Formspree](https://formspree.io) — a free service built for static sites.
+
+**One-time setup:**
+1. Create a free account at [formspree.io](https://formspree.io) → **+ New form**.
+2. Name it (e.g. "Raymond Digital Website") and set the destination email to **raymonddigitalx@gmail.com**.
+3. Copy your form ID from the endpoint it gives you (e.g. `https://formspree.io/f/xvgkabcd` → ID is `xvgkabcd`).
+4. In `index.html`, find the contact form and replace `YOUR_FORM_ID` in the action attribute:
+   ```html
+   <form class="form-card" id="contactForm"
+         action="https://formspree.io/f/YOUR_FORM_ID" ...>
+   ```
+5. Confirm the verification email Formspree sends you. Done — hard-refresh and submit a test.
+
+**How everything works after setup:**
+
+| What | Where / How |
+|---|---|
+| Message delivery | AJAX POST to Formspree — **no page refresh**, button shows "Sending…" |
+| Email notification | Formspree emails **raymonddigitalx@gmail.com** instantly, subject *"New Raymond Digital Website Enquiry"*, with Name / Email / Phone / Service / Budget / Message neatly listed |
+| Stored submissions | Formspree dashboard → your form → **Submissions** tab (view, search, **export CSV**) |
+| Spam protection | Hidden **honeypot field** (`_gotcha`) + Formspree's server-side spam filtering + full client-side validation |
+| Success message | *"Thank you for contacting Raymond Digital. Your message has been received. We will get back to you shortly."* (inline — page never refreshes) |
+| Failure handling | *"Unable to send your message. Please try again or contact us through WhatsApp."* with a clickable WhatsApp recovery link |
+| Before you connect it | The form falls back to opening the visitor's email app (mailto) — nothing ever breaks silently |
+
+Free plan: **50 submissions/month**. Upgrade or point the same form to multiple inboxes anytime from the Formspree dashboard.
+
+**Future admin dashboard:** every enquiry is already delivered in a database-ready schema — unique reference ID (`RD-XXXXXX-NN`), ISO timestamp and a status field (`new → contacted → in-progress → completed → archived`). The full architecture — recommended database schemas (Supabase / Firebase / MySQL), the `/admin` dashboard plan, security checklist and the client-management roadmap — is documented in **[`docs/ADMIN-ARCHITECTURE.md`](docs/ADMIN-ARCHITECTURE.md)**.
 
 ---
 

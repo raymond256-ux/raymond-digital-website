@@ -7,39 +7,41 @@
        HOW TO EDIT THIS FILE:
        - Each page section is wrapped in clearly labelled comments.
        - Search for "SECTION:" to jump to any part of the page.
-       - Text content is plain HTML — edit it directly.
-       - Search for "TODO" to find items to customize (links, etc).
+       - Search for "TODO" to find items to customize.
        ============================================================ -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <!-- SECTION: SEO META TAGS -->
   <title>Raymond Digital | ICT &amp; Business Solutions</title>
-  <meta name="description" content="Raymond Digital provides professional ICT solutions, web development, digital skills training, creative services, research support and virtual assistance for individuals and organizations worldwide." />
-  <meta name="keywords" content="Raymond Digital, ICT solutions, web development, digital skills training, graphic design, research support, virtual assistance, business solutions" />
+  <meta name="description" content="Professional ICT solutions, web development, digital skills training, creative services, virtual assistance, and research support by Raymond Digital." />
+  <meta name="keywords" content="Raymond Digital, ICT solutions Uganda, web development services, digital solutions, website development, digital skills training, virtual assistant services, research support, graphic design, ICT technical support, content writing, academic editing" />
   <meta name="author" content="Raymond Digital" />
   <meta name="robots" content="index, follow" />
-  <meta name="theme-color" content="#0A2540" />
+  <meta name="theme-color" content="#04122B" />
   <!-- TODO: Replace with your real domain once the site is live -->
   <!-- <link rel="canonical" href="https://www.yourdomain.com/" /> -->
 
   <!-- SECTION: OPEN GRAPH / SOCIAL SHARING -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Raymond Digital | ICT &amp; Business Solutions" />
-  <meta property="og:title" content="Empowering Businesses Through Technology &amp; Digital Solutions" />
-  <meta property="og:description" content="Innovative ICT solutions, web development, digital skills training, creative services, research support and virtual assistance." />
-  <!-- TODO: Use an absolute URL (https://yourdomain.com/assets/images/og-image.png) when live -->
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="Transforming Ideas Into Powerful Digital Solutions" />
+  <meta property="og:description" content="Professional ICT solutions, web development, digital skills training, creative services, virtual assistance, and research support by Raymond Digital." />
+  <!-- TODO: Uncomment and use your real domain when live -->
+  <!-- <meta property="og:url" content="https://www.yourdomain.com/" /> -->
   <meta property="og:image" content="assets/images/og-image.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Raymond Digital — ICT and Business Solutions" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Raymond Digital | ICT &amp; Business Solutions" />
-  <meta name="twitter:description" content="Transforming ideas into digital solutions." />
+  <meta name="twitter:description" content="Empowering businesses and individuals through technology and digital innovation." />
   <meta name="twitter:image" content="assets/images/og-image.png" />
+  <meta name="twitter:image:alt" content="Raymond Digital — ICT and Business Solutions" />
 
-  <!-- SECTION: FAVICON SUPPORT -->
-  <!-- Favicons are generated from the official logo. To refresh them after
-       adding/updating assets/images/raymond-digital-logo.png, run:
+  <!-- SECTION: FAVICON SUPPORT (generated from the official logo) -->
+  <!-- Refresh after logo changes:
        powershell -ExecutionPolicy Bypass -File _tools\generate-favicons.ps1 -->
   <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png" />
@@ -66,11 +68,35 @@
     "@context": "https://schema.org",
     "@type": "ProfessionalService",
     "name": "Raymond Digital | ICT & Business Solutions",
-    "description": "Technology-driven company providing ICT solutions, web development, digital skills training, creative services, research support and virtual assistance.",
+    "description": "Professional ICT solutions, web development, digital skills training, creative services, virtual assistance, and research support.",
+    "slogan": "Empowering businesses and individuals through technology and digital innovation.",
     "email": "raymonddigitalx@gmail.com",
+    "telephone": "+256765674633",
     "areaServed": "Worldwide",
     "priceRange": "$$",
-    "slogan": "Transforming ideas into digital solutions."
+    "knowsAbout": [
+      "Web Development",
+      "ICT Technical Support",
+      "Microsoft Office Training",
+      "Graphic Design",
+      "Content Writing and Editing",
+      "Academic Editing and Publication Support",
+      "Virtual Assistance"
+    ],
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+        "opens": "08:00",
+        "closes": "18:00"
+      }
+    ],
+    "sameAs": [
+      "https://www.facebook.com/raymonddigisolutions",
+      "https://www.instagram.com/raymonddigitalx",
+      "https://www.linkedin.com/in/raymonddigitalx",
+      "https://wa.me/256765674633"
+    ]
   }
   </script>
 </head>
@@ -93,7 +119,7 @@
           <stop offset="0" stop-color="#06B6D4"/><stop offset="1" stop-color="#10B981"/>
         </linearGradient>
 
-        <!-- Official Raymond Digital logo mark (reused in header/footer/watermark) -->
+        <!-- Raymond Digital brand mark (fallback + decorative watermark) -->
         <symbol id="logo-mark" viewBox="0 0 56 56">
           <rect width="56" height="56" rx="14" fill="url(#gradBrand)"/>
           <path d="M0 0 h56 v16 c-19 9 -37 9 -56 0 z" fill="#FFFFFF" opacity="0.08"/>
@@ -121,12 +147,14 @@
       <symbol id="i-mail" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M22 7l-10 6L2 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
       <symbol id="i-map-pin" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="10" r="3" fill="none" stroke="currentColor" stroke-width="2"/></symbol>
       <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/><polyline points="12 6 12 12 16 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
-      <symbol id="i-phone" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.08 4.18 2 2 0 0 1 4.06 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.68 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.32 1.85.55 2.81.68A2 2 0 0 1 22 16.92z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
       <symbol id="i-send" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><polygon points="22 2 15 22 11 13 2 9 22 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
       <symbol id="i-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
       <symbol id="i-chev" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
       <symbol id="i-up" viewBox="0 0 24 24"><line x1="12" y1="19" x2="12" y2="5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><polyline points="5 12 12 5 19 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
       <symbol id="i-eye" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="2"/></symbol>
+      <symbol id="i-cloud" viewBox="0 0 24 24"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="i-cpu" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><rect x="9" y="9" width="6" height="6" fill="none" stroke="currentColor" stroke-width="2"/><line x1="9" y1="1" x2="9" y2="4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="15" y1="1" x2="15" y2="4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="9" y1="20" x2="9" y2="23" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="15" y1="20" x2="15" y2="23" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="20" y1="9" x2="23" y2="9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="20" y1="14" x2="23" y2="14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="1" y1="9" x2="4" y2="9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="1" y1="14" x2="4" y2="14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+      <symbol id="i-network" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="6" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="18" cy="19" r="3" fill="none" stroke="currentColor" stroke-width="2"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
       <symbol id="i-star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="currentColor" stroke="none"/></symbol>
       <symbol id="i-linkedin" viewBox="0 0 448 512"><path fill="currentColor" stroke="none" d="M100.28 448H7.4V148.9h92.88zM53.79 108.1C24.09 108.1 0 83.5 0 53.8a53.79 53.79 0 0 1 107.58 0c0 29.7-24.1 54.3-53.79 54.3zM447.9 448h-92.68V302.4c0-34.7-.7-79.2-48.29-79.2-48.29 0-55.69 37.7-55.69 76.7V448h-92.78V148.9h89.08v40.8h1.3c12.4-23.5 42.69-48.3 87.88-48.3 94 0 111.28 61.9 111.28 142.3V448z"/></symbol>
       <symbol id="i-facebook" viewBox="0 0 512 512"><path fill="currentColor" stroke="none" d="M504 256C504 119 393 8 256 8S8 119 8 256c0 123.78 90.69 226.38 209.25 245V327.69h-63V256h63v-54.64c0-62.15 37-96.48 93.67-96.48 27.14 0 55.52 4.84 55.52 4.84v61h-31.28c-30.8 0-40.41 19.12-40.41 38.73V256h68.78l-11 71.69h-57.78V501C413.31 482.38 504 379.78 504 256z"/></symbol>
@@ -137,6 +165,7 @@
 
   <!-- =============================
        SECTION: HEADER / NAVIGATION
+       Transparent over the dark hero, frosted glass on scroll.
        ============================= -->
   <header class="site-header" id="siteHeader">
     <nav class="container nav" aria-label="Main navigation">
@@ -144,9 +173,7 @@
       <!-- Brand logo -->
       <!-- Uses the web-optimized mark (auto-cropped, transparent background).
            After changing assets/images/raymond-digital-logo.png regenerate it:
-             powershell -ExecutionPolicy Bypass -File _tools\prepare-logo.ps1
-           TIP: if your logo artwork contains the full company name, add the
-           class "brand--logo-only" to this <a> tag to hide the text lockup. -->
+             powershell -ExecutionPolicy Bypass -File _tools\prepare-logo.ps1 -->
       <a href="#home" class="brand" aria-label="Raymond Digital home">
         <span class="logo-wrap">
           <img class="logo-img" src="assets/images/raymond-digital-logo-mark.png" alt=""
@@ -164,11 +191,12 @@
         <li><a href="#home" class="nav-link active">Home</a></li>
         <li><a href="#about" class="nav-link">About</a></li>
         <li><a href="#services" class="nav-link">Services</a></li>
-        <li><a href="#why-us" class="nav-link">Why Us</a></li>
-        <li><a href="#projects" class="nav-link">Projects</a></li>
-        <li><a href="#process" class="nav-link">Process</a></li>
+        <li><a href="#projects" class="nav-link">Portfolio</a></li>
+        <li><a href="#blog" class="nav-link">Blog</a></li>
         <li><a href="#contact" class="nav-link">Contact</a></li>
-        <li class="nav-cta-item"><a href="#contact" class="btn btn-accent btn-sm">Get Started</a></li>
+        <li class="nav-cta-item">
+          <a href="#contact" class="btn btn-wa btn-sm">Start Your Project</a>
+        </li>
       </ul>
 
       <!-- Hamburger toggle (mobile only) -->
@@ -181,13 +209,15 @@
   <main id="main">
 
     <!-- =============================
-         SECTION: HERO
+         SECTION: HERO (dark premium)
          ============================= -->
     <section class="hero" id="home">
       <div class="hero-bg" aria-hidden="true">
         <span class="blob blob-1"></span>
         <span class="blob blob-2"></span>
         <span class="blob blob-3"></span>
+        <span class="hero-shape shape-ring"></span>
+        <span class="hero-shape shape-tri"></span>
       </div>
 
       <div class="container hero-inner">
@@ -200,18 +230,22 @@
           </span>
 
           <h1 class="hero-title">
-            Empowering Businesses Through
-            <span class="grad-text">Technology</span> &amp;
-            <span class="grad-text">Digital Solutions</span>
+            Transforming Ideas Into
+            <span class="grad-text">Powerful Digital Solutions</span>
           </h1>
           <p class="hero-lead">
-            Raymond Digital provides innovative ICT solutions, web development,
-            digital skills training, creative services, research support, and
-            virtual assistance to help individuals and organizations grow digitally.
+            Raymond Digital provides professional ICT solutions, web development,
+            digital skills training, creative services, and research support to
+            help businesses and individuals succeed in the digital world.
           </p>
 
           <div class="hero-actions">
-            <a href="#contact" class="btn btn-primary">Get Started</a>
+            <!-- Primary CTA: WhatsApp consultation -->
+            <a href="https://wa.me/256765674633?text=Hello%20Raymond%20Digital%2C%20I%27d%20like%20to%20get%20started%20with%20a%20project."
+               target="_blank" rel="noopener" class="btn btn-wa">
+              <svg class="icon icon-sm" aria-hidden="true"><use href="#i-whatsapp"/></svg>
+              Get Started
+            </a>
             <a href="#services" class="btn btn-ghost">Explore Our Services
               <svg class="icon icon-sm" aria-hidden="true"><use href="#i-chev"/></svg>
             </a>
@@ -232,32 +266,34 @@
               <small>Trusted by 25+ businesses, researchers &amp; teams worldwide</small>
             </div>
           </div>
-
-          <!-- Animated counters -->
-          <dl class="hero-stats">
-            <div class="stat">
-              <dt>Projects Delivered</dt>
-              <dd><span class="count" data-count="40">0</span><em>+</em></dd>
-            </div>
-            <div class="stat">
-              <dt>Happy Clients</dt>
-              <dd><span class="count" data-count="25">0</span><em>+</em></dd>
-            </div>
-            <div class="stat">
-              <dt>Client Satisfaction</dt>
-              <dd><span class="count" data-count="98">0</span><em>%</em></dd>
-            </div>
-            <div class="stat">
-              <dt>Support Availability</dt>
-              <dd>24<em>/7</em></dd>
-            </div>
-          </dl>
         </div>
 
-        <!-- Hero visual: real technology photography + floating glass cards -->
+        <!-- Hero visual: photography + floating technology elements -->
         <figure class="hero-art" data-reveal data-delay="2">
           <div class="hero-visual">
             <span class="hero-ring" aria-hidden="true"></span>
+
+            <!-- Floating tech elements (parallax slots) -->
+            <span class="float-slot fs-a" data-parallax="18" aria-hidden="true">
+              <span class="float-el fe-glyph">{&nbsp;}</span>
+            </span>
+            <span class="float-slot fs-b" data-parallax="26" aria-hidden="true">
+              <span class="float-el fe-icon"><svg class="icon"><use href="#i-cloud"/></svg></span>
+            </span>
+            <span class="float-slot fs-c" data-parallax="14" aria-hidden="true">
+              <span class="float-el fe-icon"><svg class="icon"><use href="#i-network"/></svg></span>
+            </span>
+            <span class="float-slot fs-d" data-parallax="22" aria-hidden="true">
+              <span class="float-el fe-label"><svg class="icon icon-sm"><use href="#i-cpu"/></svg>AI-Powered</span>
+            </span>
+
+            <!-- Glowing particles -->
+            <span class="particle pt-1" aria-hidden="true"></span>
+            <span class="particle pt-2" aria-hidden="true"></span>
+            <span class="particle pt-3" aria-hidden="true"></span>
+            <span class="particle pt-4" aria-hidden="true"></span>
+            <span class="particle pt-5" aria-hidden="true"></span>
+            <span class="particle pt-6" aria-hidden="true"></span>
 
             <div class="hero-photo">
               <img src="assets/images/hero-tech.jpg"
@@ -290,9 +326,43 @@
       </div>
 
       <!-- Scroll hint -->
-      <a href="#about" class="scroll-hint" aria-label="Scroll down to about section">
+      <a href="#trust" class="scroll-hint" aria-label="Scroll down to see our numbers">
         <span class="mouse"><span class="wheel"></span></span>
       </a>
+    </section>
+
+    <!-- =============================
+         SECTION: TRUST STATISTICS
+         Edit the numbers via the data-count attributes.
+         ============================= -->
+    <section class="trust" id="trust" aria-label="Raymond Digital in numbers">
+      <div class="container">
+        <div class="trust-grid">
+          <article class="trust-card" data-reveal>
+            <span class="icon-chip icon-chip--light"><svg class="icon" aria-hidden="true"><use href="#i-code"/></svg></span>
+            <strong class="trust-num"><span class="count" data-count="40">0</span><em>+</em></strong>
+            <span class="trust-label">Projects Supported</span>
+          </article>
+
+          <article class="trust-card" data-reveal data-delay="1">
+            <span class="icon-chip icon-chip--light"><svg class="icon" aria-hidden="true"><use href="#i-zap"/></svg></span>
+            <strong class="trust-num"><span class="count" data-count="60">0</span><em>+</em></strong>
+            <span class="trust-label">Digital Solutions Delivered</span>
+          </article>
+
+          <article class="trust-card" data-reveal data-delay="2">
+            <span class="icon-chip icon-chip--light"><svg class="icon" aria-hidden="true"><use href="#i-file"/></svg></span>
+            <strong class="trust-num"><span class="count" data-count="120">0</span><em>+</em></strong>
+            <span class="trust-label">Documents Edited</span>
+          </article>
+
+          <article class="trust-card" data-reveal data-delay="3">
+            <span class="icon-chip icon-chip--light"><svg class="icon" aria-hidden="true"><use href="#i-headset"/></svg></span>
+            <strong class="trust-num"><span class="count" data-count="250">0</span><em>+</em></strong>
+            <span class="trust-label">Technical Support Sessions</span>
+          </article>
+        </div>
+      </div>
     </section>
 
     <!-- =============================
@@ -304,10 +374,11 @@
           <span class="eyebrow">About Us</span>
           <h2>Your Reliable Digital Partner</h2>
           <p>
-            Raymond Digital | ICT &amp; Business Solutions is a technology-driven
-            company focused on providing reliable digital solutions that empower
-            individuals, businesses, and organizations. We combine technology,
-            creativity, and expertise to solve modern digital challenges.
+            Raymond Digital is a technology and digital solutions company committed
+            to empowering individuals, businesses, and organizations through
+            innovative digital services. We combine deep technology expertise with
+            creativity and dependable professional support — guiding every client
+            through each step of their digital transformation.
           </p>
         </header>
 
@@ -370,14 +441,14 @@
             <span class="svc-num" aria-hidden="true">01</span>
             <div class="icon-chip"><svg class="icon" aria-hidden="true"><use href="#i-code"/></svg></div>
             <h3>Web Development &amp; Digital Solutions</h3>
-            <p>Modern, fast and secure online presence tailored to your brand.</p>
+            <p>We build fast, secure, conversion-focused websites that give your business a credible online home and turn visitors into customers.</p>
             <ul class="svc-list">
               <li><svg class="icon icon-xs" aria-hidden="true"><use href="#i-check"/></svg>Business websites</li>
-              <li><svg class="icon icon-xs" aria-hidden="true"><use href="#i-check"/></svg>Landing pages</li>
-              <li><svg class="icon icon-xs" aria-hidden="true"><use href="#i-check"/></svg>Web applications</li>
-              <li><svg class="icon icon-xs" aria-hidden="true"><use href="#i-check"/></svg>Website maintenance</li>
+              <li><svg class="icon icon-xs" aria-hidden="true"><use href="#i-check"/></svg>Responsive web design</li>
+              <li><svg class="icon icon-xs" aria-hidden="true"><use href="#i-check"/></svg>Digital platforms</li>
+              <li><svg class="icon icon-xs" aria-hidden="true"><use href="#i-check"/></svg>Website solutions</li>
             </ul>
-            <a class="svc-link" href="#contact">Request service <svg class="icon icon-sm" aria-hidden="true"><use href="#i-chev"/></svg></a>
+            <a class="svc-link" href="#contact">Learn More <svg class="icon icon-sm" aria-hidden="true"><use href="#i-chev"/></svg></a>
           </article>
 
           <!-- Service 02 -->
@@ -385,14 +456,13 @@
             <span class="svc-num" aria-hidden="true">02</span>
             <div class="icon-chip"><svg class="icon" aria-hidden="true"><use href="#i-tool"/></svg></div>
             <h3>ICT &amp; Technical Support</h3>
-            <p>Dependable hands-on help that keeps your technology running.</p>
+            <p>Dependable technical expertise that keeps your systems running smoothly — so downtime never slows your business down.</p>
             <ul class="svc-list">
               <li><svg class="icon icon-xs" aria-hidden="true"><use href="#i-check"/></svg>Computer support</li>
-              <li><svg class="icon icon-xs" aria-hidden="true"><use href="#i-check"/></svg>Software installation</li>
-              <li><svg class="icon icon-xs" aria-hidden="true"><use href="#i-check"/></svg>Troubleshooting</li>
-              <li><svg class="icon icon-xs" aria-hidden="true"><use href="#i-check"/></svg>Digital solutions</li>
+              <li><svg class="icon icon-xs" aria-hidden="true"><use href="#i-check"/></svg>Software assistance</li>
+              <li><svg class="icon icon-xs" aria-hidden="true"><use href="#i-check"/></svg>Technical solutions</li>
             </ul>
-            <a class="svc-link" href="#contact">Request service <svg class="icon icon-sm" aria-hidden="true"><use href="#i-chev"/></svg></a>
+            <a class="svc-link" href="#contact">Learn More <svg class="icon icon-sm" aria-hidden="true"><use href="#i-chev"/></svg></a>
           </article>
 
           <!-- Service 03 -->
@@ -400,14 +470,14 @@
             <span class="svc-num" aria-hidden="true">03</span>
             <div class="icon-chip"><svg class="icon" aria-hidden="true"><use href="#i-chart"/></svg></div>
             <h3>Data, Microsoft Office &amp; Digital Skills</h3>
-            <p>Practical training that turns beginners into confident professionals.</p>
+            <p>Hands-on training that equips students, teams, and professionals with the practical digital skills the modern workplace demands.</p>
             <ul class="svc-list">
               <li><svg class="icon icon-xs" aria-hidden="true"><use href="#i-check"/></svg>Microsoft Word</li>
               <li><svg class="icon icon-xs" aria-hidden="true"><use href="#i-check"/></svg>Excel</li>
               <li><svg class="icon icon-xs" aria-hidden="true"><use href="#i-check"/></svg>PowerPoint</li>
               <li><svg class="icon icon-xs" aria-hidden="true"><use href="#i-check"/></svg>Digital literacy training</li>
             </ul>
-            <a class="svc-link" href="#contact">Request service <svg class="icon icon-sm" aria-hidden="true"><use href="#i-chev"/></svg></a>
+            <a class="svc-link" href="#contact">Learn More <svg class="icon icon-sm" aria-hidden="true"><use href="#i-chev"/></svg></a>
           </article>
 
           <!-- Service 04 -->
@@ -415,14 +485,13 @@
             <span class="svc-num" aria-hidden="true">04</span>
             <div class="icon-chip"><svg class="icon" aria-hidden="true"><use href="#i-pen"/></svg></div>
             <h3>Graphic Design &amp; Creative Services</h3>
-            <p>Visual identities and marketing materials that make brands memorable.</p>
+            <p>Memorable branding and scroll-stopping social media designs that make your business impossible to ignore.</p>
             <ul class="svc-list">
-              <li><svg class="icon icon-xs" aria-hidden="true"><use href="#i-check"/></svg>Logos</li>
               <li><svg class="icon icon-xs" aria-hidden="true"><use href="#i-check"/></svg>Branding</li>
-              <li><svg class="icon icon-xs" aria-hidden="true"><use href="#i-check"/></svg>Posters</li>
-              <li><svg class="icon icon-xs" aria-hidden="true"><use href="#i-check"/></svg>Marketing materials</li>
+              <li><svg class="icon icon-xs" aria-hidden="true"><use href="#i-check"/></svg>Social media designs</li>
+              <li><svg class="icon icon-xs" aria-hidden="true"><use href="#i-check"/></svg>Creative solutions</li>
             </ul>
-            <a class="svc-link" href="#contact">Request service <svg class="icon icon-sm" aria-hidden="true"><use href="#i-chev"/></svg></a>
+            <a class="svc-link" href="#contact">Learn More <svg class="icon icon-sm" aria-hidden="true"><use href="#i-chev"/></svg></a>
           </article>
 
           <!-- Service 05 -->
@@ -430,41 +499,42 @@
             <span class="svc-num" aria-hidden="true">05</span>
             <div class="icon-chip"><svg class="icon" aria-hidden="true"><use href="#i-file"/></svg></div>
             <h3>Content Writing, Editing &amp; Proofreading</h3>
-            <p>Clear, polished words that give your documents professional impact.</p>
+            <p>Clear, polished, persuasive content that elevates your brand image and communicates your message with impact.</p>
             <ul class="svc-list">
-              <li><svg class="icon icon-xs" aria-hidden="true"><use href="#i-check"/></svg>Articles</li>
-              <li><svg class="icon icon-xs" aria-hidden="true"><use href="#i-check"/></svg>Reports</li>
-              <li><svg class="icon icon-xs" aria-hidden="true"><use href="#i-check"/></svg>Professional documents</li>
+              <li><svg class="icon icon-xs" aria-hidden="true"><use href="#i-check"/></svg>Professional writing</li>
+              <li><svg class="icon icon-xs" aria-hidden="true"><use href="#i-check"/></svg>Document editing</li>
+              <li><svg class="icon icon-xs" aria-hidden="true"><use href="#i-check"/></svg>Content improvement</li>
             </ul>
-            <a class="svc-link" href="#contact">Request service <svg class="icon icon-sm" aria-hidden="true"><use href="#i-chev"/></svg></a>
+            <a class="svc-link" href="#contact">Learn More <svg class="icon icon-sm" aria-hidden="true"><use href="#i-chev"/></svg></a>
           </article>
 
           <!-- Service 06 -->
           <article class="svc-card" data-reveal data-delay="2">
             <span class="svc-num" aria-hidden="true">06</span>
-            <div class="icon-chip"><svg class="icon" aria-hidden="true"><use href="#i-book"/></svg></div>
-            <h3>Research &amp; Publication Support</h3>
-            <p>Academic-grade assistance from first draft to journal submission.</p>
-            <ul class="svc-list">
-              <li><svg class="icon icon-xs" aria-hidden="true"><use href="#i-check"/></svg>Academic editing</li>
-              <li><svg class="icon icon-xs" aria-hidden="true"><use href="#i-check"/></svg>Manuscript preparation</li>
-              <li><svg class="icon icon-xs" aria-hidden="true"><use href="#i-check"/></svg>Journal submission support</li>
-            </ul>
-            <a class="svc-link" href="#contact">Request service <svg class="icon icon-sm" aria-hidden="true"><use href="#i-chev"/></svg></a>
-          </article>
-
-          <!-- Service 07 -->
-          <article class="svc-card" data-reveal>
-            <span class="svc-num" aria-hidden="true">07</span>
             <div class="icon-chip"><svg class="icon" aria-hidden="true"><use href="#i-headset"/></svg></div>
             <h3>Virtual Assistance &amp; Administrative Support</h3>
-            <p>Reliable remote support so you can focus on what matters most.</p>
+            <p>Skilled remote support that handles the details reliably, freeing you to focus on what you do best — growing your business.</p>
             <ul class="svc-list">
               <li><svg class="icon icon-xs" aria-hidden="true"><use href="#i-check"/></svg>Data entry</li>
               <li><svg class="icon icon-xs" aria-hidden="true"><use href="#i-check"/></svg>Online research</li>
               <li><svg class="icon icon-xs" aria-hidden="true"><use href="#i-check"/></svg>Administrative tasks</li>
             </ul>
-            <a class="svc-link" href="#contact">Request service <svg class="icon icon-sm" aria-hidden="true"><use href="#i-chev"/></svg></a>
+            <a class="svc-link" href="#contact">Learn More <svg class="icon icon-sm" aria-hidden="true"><use href="#i-chev"/></svg></a>
+          </article>
+
+          <!-- Service 07 -->
+          <article class="svc-card" data-reveal>
+            <span class="svc-num" aria-hidden="true">07</span>
+            <div class="icon-chip"><svg class="icon" aria-hidden="true"><use href="#i-book"/></svg></div>
+            <h3>Research &amp; Academic Publishing Support</h3>
+            <p>Expert academic support that takes your research from rough manuscript to published work — with guidance at every step.</p>
+            <ul class="svc-list">
+              <li><svg class="icon icon-xs" aria-hidden="true"><use href="#i-check"/></svg>Academic editing</li>
+              <li><svg class="icon icon-xs" aria-hidden="true"><use href="#i-check"/></svg>Manuscript preparation</li>
+              <li><svg class="icon icon-xs" aria-hidden="true"><use href="#i-check"/></svg>Research support</li>
+              <li><svg class="icon icon-xs" aria-hidden="true"><use href="#i-check"/></svg>Publication assistance</li>
+            </ul>
+            <a class="svc-link" href="#contact">Learn More <svg class="icon icon-sm" aria-hidden="true"><use href="#i-chev"/></svg></a>
           </article>
 
           <!-- CTA tile completes the grid -->
@@ -479,108 +549,192 @@
     </section>
 
     <!-- =============================
-         SECTION: WHY CHOOSE US
+         SECTION: WHY CHOOSE RAYMOND DIGITAL
          ============================= -->
-    <section class="section why section--alt" id="why-us">
+    <section class="section why why--dark" id="why-us">
       <div class="container">
         <header class="section-head" data-reveal>
           <span class="eyebrow">Why Choose Us</span>
-          <h2>The Raymond Digital Advantage</h2>
-          <p>We measure success by the results our clients achieve — here is what working with us feels like.</p>
+          <h2>Why Choose Raymond Digital</h2>
+          <p>Five commitments that shape every project we take on — and every relationship we build.</p>
         </header>
 
         <div class="why-grid">
           <article class="why-card" data-reveal>
             <div class="icon-ring"><svg class="icon" aria-hidden="true"><use href="#i-award"/></svg></div>
-            <h3>Professional Quality</h3>
-            <p>Every deliverable is reviewed against strict quality standards before it reaches you.</p>
+            <h3>Professional Expertise</h3>
+            <p>Certified-level craftsmanship across web, design and ICT — refined through dozens of real client projects.</p>
           </article>
 
           <article class="why-card" data-reveal data-delay="1">
-            <div class="icon-ring"><svg class="icon" aria-hidden="true"><use href="#i-shield"/></svg></div>
-            <h3>Reliable Support</h3>
-            <p>We stay reachable before, during and after your project — you are never left stranded.</p>
+            <div class="icon-ring"><svg class="icon" aria-hidden="true"><use href="#i-tag"/></svg></div>
+            <h3>Affordable Digital Solutions</h3>
+            <p>Transparent, fair pricing that puts premium digital quality within reach of every business.</p>
           </article>
 
           <article class="why-card" data-reveal data-delay="2">
-            <div class="icon-ring"><svg class="icon" aria-hidden="true"><use href="#i-tag"/></svg></div>
-            <h3>Affordable Solutions</h3>
-            <p>Fair, transparent pricing that gives small businesses access to premium digital services.</p>
+            <div class="icon-ring"><svg class="icon" aria-hidden="true"><use href="#i-users"/></svg></div>
+            <h3>Client-Focused Approach</h3>
+            <p>Your goals lead every decision. We listen first, advise honestly and build what truly serves you.</p>
           </article>
 
           <article class="why-card" data-reveal data-delay="3">
-            <div class="icon-ring"><svg class="icon" aria-hidden="true"><use href="#i-zap"/></svg></div>
-            <h3>Innovation Driven</h3>
-            <p>We adopt modern tools and trends so your business always stays ahead of the curve.</p>
+            <div class="icon-ring"><svg class="icon" aria-hidden="true"><use href="#i-headset"/></svg></div>
+            <h3>Reliable Support</h3>
+            <p>Fast, dependable help before, during and long after delivery — whenever you reach out.</p>
           </article>
 
           <article class="why-card" data-reveal data-delay="4">
-            <div class="icon-ring"><svg class="icon" aria-hidden="true"><use href="#i-users"/></svg></div>
-            <h3>Client Focused</h3>
-            <p>Your goals shape every decision — we listen first, then build exactly what you need.</p>
+            <div class="icon-ring"><svg class="icon" aria-hidden="true"><use href="#i-cpu"/></svg></div>
+            <h3>Modern Technology</h3>
+            <p>We work with current tools and platforms so your solution is fast, secure and future-ready.</p>
           </article>
         </div>
       </div>
     </section>
 
     <!-- =============================
-         SECTION: PROJECTS / PORTFOLIO
+         SECTION: PORTFOLIO
          ============================= -->
     <section class="section projects" id="projects">
       <div class="container">
         <header class="section-head" data-reveal>
           <span class="eyebrow">Our Work</span>
-          <h2>Selected Projects</h2>
-          <p>A snapshot of what we deliver. New case studies are added as projects complete.</p>
+          <h2>Featured Projects</h2>
+          <p>Real solutions delivered for real clients — a snapshot of the work behind our reputation.</p>
         </header>
 
         <div class="projects-grid">
           <article class="proj-card" data-reveal>
             <figure>
-              <img src="assets/images/project-web.jpg" alt="Corporate website designed and built by Raymond Digital, shown on a laptop" width="800" height="600" loading="lazy" />
+              <img src="assets/images/project-web.jpg" alt="Raymond Digital corporate website displayed on a laptop" width="800" height="600" loading="lazy" />
               <span class="proj-cat">Web Development</span>
             </figure>
             <div class="proj-body">
-              <h3>Corporate Business Websites</h3>
-              <p>Fast, responsive company websites designed to convert visitors into customers.</p>
+              <h3>Raymond Digital Website</h3>
+              <p>Our flagship digital home — a fully responsive, SEO-optimized corporate website with conversion-focused pages and integrated WhatsApp enquiry channels.</p>
+              <ul class="proj-meta" aria-label="Project highlights">
+                <li>Responsive Design</li>
+                <li>SEO Optimization</li>
+                <li>WhatsApp Integration</li>
+              </ul>
+              <a class="proj-view" href="#contact">View Project <svg class="icon icon-sm" aria-hidden="true"><use href="#i-chev"/></svg></a>
             </div>
           </article>
 
           <article class="proj-card" data-reveal data-delay="1">
             <figure>
-              <img src="assets/images/project-research.jpg" alt="Academic research manuscript editing and publication support" width="800" height="600" loading="lazy" />
-              <span class="proj-cat">Research Support</span>
+              <img src="assets/images/project-research.jpg" alt="Nexa Scholar research and publishing website — manuscript editing and journal preparation" width="800" height="600" loading="lazy" />
+              <span class="proj-cat">Research &amp; Publication</span>
             </figure>
             <div class="proj-body">
-              <h3>Research Publications</h3>
-              <p>Manuscript editing, formatting and journal submission support for academics.</p>
+              <h3>Nexa Scholar Research &amp; Publishing Website</h3>
+              <p>A dedicated platform guiding researchers from manuscript preparation to journal publication — with editing, formatting and submission support built in.</p>
+              <ul class="proj-meta" aria-label="Project highlights">
+                <li>Academic Editing</li>
+                <li>Manuscript Preparation</li>
+                <li>Journal Submission</li>
+              </ul>
+              <a class="proj-view" href="#contact">View Project <svg class="icon icon-sm" aria-hidden="true"><use href="#i-chev"/></svg></a>
             </div>
           </article>
 
           <article class="proj-card" data-reveal data-delay="2">
             <figure>
-              <img src="assets/images/project-branding.jpg" alt="Brand identity design materials — logos, colors and stationery" width="800" height="600" loading="lazy" />
-              <span class="proj-cat">Branding</span>
+              <img src="assets/images/project-ai.svg" alt="AI automation project — connected workflow nodes and smart integrations" width="800" height="600" loading="lazy" />
+              <span class="proj-cat">Automation</span>
             </figure>
             <div class="proj-body">
-              <h3>Digital Branding Projects</h3>
-              <p>Logo systems, brand kits and marketing collateral with a consistent identity.</p>
+              <h3>AI Automation Project</h3>
+              <p>Smart workflow automation that removes repetitive tasks — from enquiry chatbots to document generation and seamless system integrations.</p>
+              <ul class="proj-meta" aria-label="Project highlights">
+                <li>Workflow Automation</li>
+                <li>Chatbots</li>
+                <li>System Integrations</li>
+              </ul>
+              <a class="proj-view" href="#contact">View Project <svg class="icon icon-sm" aria-hidden="true"><use href="#i-chev"/></svg></a>
             </div>
           </article>
 
           <article class="proj-card" data-reveal data-delay="3">
             <figure>
-              <img src="assets/images/project-training.jpg" alt="ICT training session with participants learning on laptops" width="800" height="600" loading="lazy" />
-              <span class="proj-cat">Training</span>
+              <img src="assets/images/project-branding.jpg" alt="Business branding project — logo systems, colors and brand stationery" width="800" height="600" loading="lazy" />
+              <span class="proj-cat">Branding</span>
             </figure>
             <div class="proj-body">
-              <h3>ICT Training Programs</h3>
-              <p>Hands-on Microsoft Office and digital literacy workshops for teams and schools.</p>
+              <h3>Business Branding Projects</h3>
+              <p>Complete identity systems — logos, color palettes, social media kits and guidelines that keep every touchpoint on-brand.</p>
+              <ul class="proj-meta" aria-label="Project highlights">
+                <li>Logo Systems</li>
+                <li>Social Media Kits</li>
+                <li>Brand Guidelines</li>
+              </ul>
+              <a class="proj-view" href="#contact">View Project <svg class="icon icon-sm" aria-hidden="true"><use href="#i-chev"/></svg></a>
             </div>
           </article>
         </div>
 
         <p class="projects-note" data-reveal>More case studies coming soon — <a href="#contact">start yours today</a>.</p>
+      </div>
+    </section>
+
+    <!-- =============================
+         SECTION: TECHNOLOGY STACK
+         ============================= -->
+    <section class="section techstack" id="tech">
+      <div class="container">
+        <header class="section-head" data-reveal>
+          <span class="eyebrow">Technology Stack</span>
+          <h2>Tools &amp; Technologies We Use</h2>
+          <p>Modern, reliable tools chosen to keep your project fast, secure and easy to maintain.</p>
+        </header>
+
+        <div class="tech-grid">
+          <article class="tech-card" data-reveal>
+            <div class="icon-chip"><svg class="icon" aria-hidden="true"><use href="#i-code"/></svg></div>
+            <h3>Web &amp; Digital Platforms</h3>
+            <ul class="tech-list" aria-label="Web technologies">
+              <li>HTML5</li>
+              <li>CSS3</li>
+              <li>JavaScript</li>
+              <li>WordPress</li>
+              <li>cPanel</li>
+            </ul>
+          </article>
+
+          <article class="tech-card" data-reveal data-delay="1">
+            <div class="icon-chip"><svg class="icon" aria-hidden="true"><use href="#i-pen"/></svg></div>
+            <h3>Design &amp; Creative</h3>
+            <ul class="tech-list" aria-label="Design tools">
+              <li>Figma</li>
+              <li>Adobe Photoshop</li>
+              <li>Canva</li>
+              <li>Brand asset kits</li>
+            </ul>
+          </article>
+
+          <article class="tech-card" data-reveal data-delay="2">
+            <div class="icon-chip"><svg class="icon" aria-hidden="true"><use href="#i-chart"/></svg></div>
+            <h3>Data &amp; Microsoft Office</h3>
+            <ul class="tech-list" aria-label="Data and office tools">
+              <li>Excel</li>
+              <li>Word</li>
+              <li>PowerPoint</li>
+              <li>Google Workspace</li>
+            </ul>
+          </article>
+
+          <article class="tech-card" data-reveal data-delay="3">
+            <div class="icon-chip"><svg class="icon" aria-hidden="true"><use href="#i-book"/></svg></div>
+            <h3>Research &amp; Publishing</h3>
+            <ul class="tech-list" aria-label="Research tools">
+              <li>Mendeley</li>
+              <li>Zotero</li>
+              <li>SPSS</li>
+              <li>Grammarly</li>
+            </ul>
+          </article>
+        </div>
       </div>
     </section>
 
@@ -593,16 +747,16 @@
         <svg class="process-watermark" viewBox="0 0 56 56" aria-hidden="true"><use href="#logo-mark"/></svg>
 
         <header class="section-head section-head--light" data-reveal>
-          <span class="eyebrow">How We Work</span>
-          <h2>A Simple, Transparent Process</h2>
-          <p>Five clear steps take your idea from first conversation to finished product — and beyond.</p>
+          <span class="eyebrow">Our Process</span>
+          <h2>Our Simple Process</h2>
+          <p>Four clear steps take your idea from first conversation to lasting digital impact.</p>
         </header>
 
         <ol class="steps">
           <li class="step" data-reveal>
             <span class="step-num">1</span>
             <h3>Consultation</h3>
-            <p>We discuss your goals, audience and budget to define the right solution.</p>
+            <p>We listen first — your goals, audience and budget define the right solution.</p>
           </li>
           <li class="step" data-reveal data-delay="1">
             <span class="step-num">2</span>
@@ -612,17 +766,12 @@
           <li class="step" data-reveal data-delay="2">
             <span class="step-num">3</span>
             <h3>Development</h3>
-            <p>We build with regular progress updates and your feedback at every stage.</p>
+            <p>We design, build and test your solution, sharing progress at every milestone.</p>
           </li>
           <li class="step" data-reveal data-delay="3">
             <span class="step-num">4</span>
-            <h3>Delivery</h3>
-            <p>We test, refine and hand over a polished product with everything you need.</p>
-          </li>
-          <li class="step" data-reveal data-delay="4">
-            <span class="step-num">5</span>
-            <h3>Support</h3>
-            <p>We remain available for maintenance, updates and future improvements.</p>
+            <h3>Delivery &amp; Support</h3>
+            <p>We launch, hand over and stay with you — training, maintenance and improvements.</p>
           </li>
         </ol>
       </div>
@@ -689,16 +838,85 @@
     </section>
 
     <!-- =============================
+         SECTION: BLOG / INSIGHTS
+         ============================= -->
+    <section class="section blog" id="blog">
+      <div class="container">
+        <header class="section-head" data-reveal>
+          <span class="eyebrow">Insights</span>
+          <h2>From the Blog</h2>
+          <p>Practical articles on technology, productivity and growing your business online — written by our team.</p>
+        </header>
+
+        <div class="blog-grid">
+          <article class="post-card" data-reveal>
+            <div class="post-top">
+              <span class="post-cat">Web Design</span>
+              <span class="post-soon">Coming Soon</span>
+            </div>
+            <div class="icon-chip"><svg class="icon" aria-hidden="true"><use href="#i-code"/></svg></div>
+            <h3>5 Signs Your Business Website Needs a Redesign</h3>
+            <p>Slow load times, outdated design and missing mobile support quietly cost you customers every day. Here is how to spot the warning signs early.</p>
+            <footer class="post-meta">
+              <svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg>
+              5 min read
+            </footer>
+          </article>
+
+          <article class="post-card" data-reveal data-delay="1">
+            <div class="post-top">
+              <span class="post-cat">Productivity</span>
+              <span class="post-soon">Coming Soon</span>
+            </div>
+            <div class="icon-chip"><svg class="icon" aria-hidden="true"><use href="#i-chart"/></svg></div>
+            <h3>Excel Skills Every Professional Should Master</h3>
+            <p>From pivot tables to clean dashboards — the essential Excel features that save hours every week at work.</p>
+            <footer class="post-meta">
+              <svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg>
+              4 min read
+            </footer>
+          </article>
+
+          <article class="post-card" data-reveal data-delay="2">
+            <div class="post-top">
+              <span class="post-cat">Research</span>
+              <span class="post-soon">Coming Soon</span>
+            </div>
+            <div class="icon-chip"><svg class="icon" aria-hidden="true"><use href="#i-book"/></svg></div>
+            <h3>How to Prepare Your Manuscript for Journal Submission</h3>
+            <p>Formatting, referencing and peer-review readiness: a practical checklist for researchers preparing their first submission.</p>
+            <footer class="post-meta">
+              <svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg>
+              6 min read
+            </footer>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- =============================
          SECTION: CALL TO ACTION BAND
          ============================= -->
-    <section class="cta-section">
+    <section class="cta-section" id="get-started">
       <div class="container">
         <div class="cta-panel" data-reveal>
-          <div>
-            <h2>Have a project in mind?</h2>
-            <p>Let&rsquo;s turn your idea into a working digital solution. Free consultation — no obligations, wherever you are in the world.</p>
+          <div class="cta-copy">
+            <h2>Ready to grow your business digitally?</h2>
+            <p>Tell us about your project today — we respond within 24 hours with a clear plan and honest pricing.</p>
+            <ul class="cta-points">
+              <li><svg class="icon icon-xs" aria-hidden="true"><use href="#i-check"/></svg>Free initial consultation</li>
+              <li><svg class="icon icon-xs" aria-hidden="true"><use href="#i-check"/></svg>No obligation</li>
+              <li><svg class="icon icon-xs" aria-hidden="true"><use href="#i-check"/></svg>Worldwide service</li>
+            </ul>
           </div>
-          <a href="#contact" class="btn btn-accent btn-lg">Start a Conversation</a>
+          <div class="cta-actions">
+            <a href="https://wa.me/256765674633?text=Hello%20Raymond%20Digital%2C%20I%27d%20like%20to%20start%20a%20project."
+               target="_blank" rel="noopener" class="btn btn-wa btn-lg">
+              <svg class="icon icon-sm" aria-hidden="true"><use href="#i-whatsapp"/></svg>
+              Chat on WhatsApp
+            </a>
+            <a href="#contact" class="btn btn-ghost btn-lg">Request a Quote</a>
+          </div>
         </div>
       </div>
     </section>
@@ -711,13 +929,21 @@
         <header class="section-head" data-reveal>
           <span class="eyebrow">Get In Touch</span>
           <h2>Let&rsquo;s Build Something Great Together</h2>
-          <p>Send us a message and we will respond within 24 hours — across any time zone.</p>
+          <p>Ready to bring your ideas to life? Contact Raymond Digital today for professional digital solutions.</p>
         </header>
 
         <div class="contact-grid">
           <!-- Contact details -->
           <div class="contact-info" data-reveal>
             <ul class="info-list">
+              <li class="info-row">
+                <div class="icon-chip icon-chip--wa"><svg class="icon" aria-hidden="true"><use href="#i-whatsapp"/></svg></div>
+                <div>
+                  <h3>Chat on WhatsApp</h3>
+                  <!-- TODO: update number here if it ever changes -->
+                  <a href="https://wa.me/256765674633" target="_blank" rel="noopener">+256 765 674 633</a>
+                </div>
+              </li>
               <li class="info-row">
                 <div class="icon-chip"><svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg></div>
                 <div>
@@ -742,20 +968,38 @@
               </li>
             </ul>
 
-            <!-- Social media (TODO: replace # placeholders with real profile URLs) -->
+            <!-- Social media -->
             <div class="socials">
               <h3>Follow Us</h3>
               <div class="social-links">
-                <a href="#" aria-label="LinkedIn" title="LinkedIn"><svg class="icon"><use href="#i-linkedin"/></svg></a>
-                <a href="#" aria-label="Facebook" title="Facebook"><svg class="icon"><use href="#i-facebook"/></svg></a>
-                <a href="#" aria-label="Instagram" title="Instagram"><svg class="icon"><use href="#i-instagram"/></svg></a>
-                <a href="#" aria-label="WhatsApp" title="WhatsApp"><svg class="icon"><use href="#i-whatsapp"/></svg></a>
+                <a href="https://www.linkedin.com/in/raymonddigitalx" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn"><svg class="icon" aria-hidden="true"><use href="#i-linkedin"/></svg></a>
+                <a href="https://www.facebook.com/raymonddigisolutions" target="_blank" rel="noopener" aria-label="Facebook" title="Facebook"><svg class="icon" aria-hidden="true"><use href="#i-facebook"/></svg></a>
+                <a href="https://www.instagram.com/raymonddigitalx" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram"><svg class="icon" aria-hidden="true"><use href="#i-instagram"/></svg></a>
+                <a href="https://wa.me/256765674633" target="_blank" rel="noopener" aria-label="WhatsApp" title="WhatsApp"><svg class="icon" aria-hidden="true"><use href="#i-whatsapp"/></svg></a>
               </div>
             </div>
           </div>
 
           <!-- Contact form (opens the visitor's email app — see README for backend options) -->
-          <form class="form-card" id="contactForm" novalidate data-reveal data-delay="1">
+          <!-- Contact form — delivered via Formspree (no backend needed).
+               SETUP: create a free form at https://formspree.io, then replace
+               YOUR_FORM_ID below with your form ID (e.g. f/xvgkabcd).
+               Until it is connected, the form falls back to opening the
+               visitor's email app. Full guide in README section 6. -->
+          <form class="form-card" id="contactForm"
+                action="https://formspree.io/f/mwlkeekv"
+                method="POST"
+                novalidate data-reveal data-delay="1">
+            <div class="form-head">
+              <h3>Send an Enquiry</h3>
+              <p>Fill in the form below and we will respond within 24 hours.</p>
+            </div>
+
+            <!-- Email subject for notifications -->
+            <input type="hidden" name="_subject" value="New Raymond Digital Website Enquiry" />
+            <!-- Honeypot spam trap (hidden from humans, catches bots) -->
+            <input type="text" name="_gotcha" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
             <div class="form-row">
               <div class="field">
                 <label for="cfName">Full Name</label>
@@ -769,6 +1013,26 @@
               </div>
             </div>
 
+            <div class="form-row">
+              <div class="field">
+                <label for="cfPhone">Phone / WhatsApp</label>
+                <input type="tel" id="cfPhone" name="phone" placeholder="+256 7XX XXX XXX" inputmode="tel" autocomplete="tel" required />
+                <small class="err" hidden>Please enter a valid phone or WhatsApp number.</small>
+              </div>
+              <div class="field">
+                <label for="cfBudget">Project Budget <small class="opt">(optional)</small></label>
+                <select id="cfBudget" name="budget">
+                  <option value="" selected>Select a range…</option>
+                  <option>Under $100</option>
+                  <option>$100 – $300</option>
+                  <option>$300 – $500</option>
+                  <option>$500 – $1,000</option>
+                  <option>$1,000+</option>
+                  <option>Not sure yet</option>
+                </select>
+              </div>
+            </div>
+
             <div class="field">
               <label for="cfService">Service Required</label>
               <select id="cfService" name="service" required>
@@ -778,15 +1042,15 @@
                 <option>Data, Microsoft Office &amp; Digital Skills</option>
                 <option>Graphic Design &amp; Creative Services</option>
                 <option>Content Writing, Editing &amp; Proofreading</option>
-                <option>Research &amp; Publication Support</option>
                 <option>Virtual Assistance &amp; Administrative Support</option>
+                <option>Research &amp; Academic Publishing Support</option>
                 <option>Other / Custom Project</option>
               </select>
               <small class="err" hidden>Please choose a service.</small>
             </div>
 
             <div class="field">
-              <label for="cfMessage">Message</label>
+              <label for="cfMessage">Message / Project Description</label>
               <textarea id="cfMessage" name="message" rows="5" placeholder="Tell us briefly about your project or question…" required minlength="10"></textarea>
               <small class="err" hidden>Please write a short message (at least 10 characters).</small>
             </div>
@@ -797,6 +1061,7 @@
             </button>
 
             <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
+            <p class="privacy-note">Your details are only used to respond to your enquiry — never shared or spammed.</p>
           </form>
         </div>
       </div>
@@ -810,7 +1075,6 @@
     <div class="container footer-grid">
       <!-- Brand column -->
       <div class="f-col f-brand">
-        <!-- Official logo on a white plate for visibility on the dark footer -->
         <a href="#home" class="brand brand--footer" aria-label="Raymond Digital home">
           <span class="logo-wrap">
             <img class="logo-img" src="assets/images/raymond-digital-logo-mark.png" alt=""
@@ -822,12 +1086,12 @@
             <small>ICT &amp; Business Solutions</small>
           </span>
         </a>
-        <p class="f-tagline">&ldquo;Transforming ideas into digital solutions.&rdquo;</p>
+        <p class="f-tagline">&ldquo;Empowering businesses and individuals through technology and digital innovation.&rdquo;</p>
         <div class="social-links social-links--footer">
-          <a href="#" aria-label="LinkedIn"><svg class="icon"><use href="#i-linkedin"/></svg></a>
-          <a href="#" aria-label="Facebook"><svg class="icon"><use href="#i-facebook"/></svg></a>
-          <a href="#" aria-label="Instagram"><svg class="icon"><use href="#i-instagram"/></svg></a>
-          <a href="#" aria-label="WhatsApp"><svg class="icon"><use href="#i-whatsapp"/></svg></a>
+          <a href="https://www.linkedin.com/in/raymonddigitalx" target="_blank" rel="noopener" aria-label="LinkedIn"><svg class="icon" aria-hidden="true"><use href="#i-linkedin"/></svg></a>
+          <a href="https://www.facebook.com/raymonddigisolutions" target="_blank" rel="noopener" aria-label="Facebook"><svg class="icon" aria-hidden="true"><use href="#i-facebook"/></svg></a>
+          <a href="https://www.instagram.com/raymonddigitalx" target="_blank" rel="noopener" aria-label="Instagram"><svg class="icon" aria-hidden="true"><use href="#i-instagram"/></svg></a>
+          <a href="https://wa.me/256765674633" target="_blank" rel="noopener" aria-label="WhatsApp"><svg class="icon" aria-hidden="true"><use href="#i-whatsapp"/></svg></a>
         </div>
       </div>
 
@@ -837,8 +1101,8 @@
         <ul>
           <li><a href="#home">Home</a></li>
           <li><a href="#about">About Us</a></li>
-          <li><a href="#projects">Projects</a></li>
-          <li><a href="#testimonials">Testimonials</a></li>
+          <li><a href="#projects">Portfolio</a></li>
+          <li><a href="#blog">Blog</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
       </nav>
@@ -859,6 +1123,7 @@
       <div class="f-col">
         <h3>Contact</h3>
         <ul class="f-contact">
+          <li><svg class="icon icon-sm" aria-hidden="true"><use href="#i-whatsapp"/></svg><a href="https://wa.me/256765674633" target="_blank" rel="noopener">+256 765 674 633</a></li>
           <li><svg class="icon icon-sm" aria-hidden="true"><use href="#i-mail"/></svg><a href="mailto:raymonddigitalx@gmail.com">raymonddigitalx@gmail.com</a></li>
           <li><svg class="icon icon-sm" aria-hidden="true"><use href="#i-globe"/></svg><span>Remote-first — clients worldwide</span></li>
           <li><svg class="icon icon-sm" aria-hidden="true"><use href="#i-clock"/></svg><span>Mon – Sat, 8:00 AM – 6:00 PM (EAT)</span></li>
@@ -873,9 +1138,9 @@
   </footer>
 
   <!-- Floating WhatsApp chat button -->
-  <!-- TODO: replace 256700000000 with the real WhatsApp number (country code + number, no "+") -->
+  <!-- TODO: update number here if it ever changes -->
   <a id="waFloat" class="wa-float"
-     href="https://wa.me/256700000000?text=Hello%20Raymond%20Digital%2C%20I%27d%20like%20to%20enquire%20about%20your%20services."
+     href="https://wa.me/256765674633?text=Hello%20Raymond%20Digital%2C%20I%27d%20like%20to%20enquire%20about%20your%20services."
      target="_blank" rel="noopener"
      aria-label="Chat with Raymond Digital on WhatsApp">
     <svg class="icon" aria-hidden="true"><use href="#i-whatsapp"/></svg>
@@ -888,6 +1153,7 @@
   </button>
 
   <!-- SECTION: SCRIPTS -->
-  <script src="assets/js/main.js" defer></script>
-</body>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/js/supabase.js"></script>
+<script src="assets/js/main.js" defer></script></body>
 </html>
