@@ -154,7 +154,7 @@
 
           if (data) {
             data.forEach(function (row) {
-              if (row.status === 'new') newCount++;
+              if ((row.status || 'new') === 'new') newCount++;
             });
           }
 
