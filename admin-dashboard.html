@@ -27,7 +27,9 @@
   <!-- STYLESHEET -->
   <link rel="stylesheet" href="assets/css/style.css" />
 
-  <!-- Supabase client — initialized by assets/js/supabase.js -->
+  <!-- Supabase JavaScript library (must load BEFORE supabase.js) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>console.log('Raymond Digital: window.supabase before config:', window.supabase);</script>
   <script src="assets/js/supabase.js"></script>
 
   <script>
