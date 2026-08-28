@@ -10,5 +10,8 @@ const raymondSupabase = window.supabase.createClient(
   SUPABASE_PUBLISHABLE_KEY
 );
 
+// Expose on window for global access
+window.raymondSupabase = raymondSupabase;
+
 console.log("Raymond Digital: Supabase client initialized successfully.");
 console.log("Raymond Supabase client:", raymondSupabase);
