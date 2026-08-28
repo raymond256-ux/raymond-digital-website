@@ -5,32 +5,167 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Raymond Digital — Admin Dashboard</title>
   <meta name="description" content="Admin dashboard for Raymond Digital — ICT & Business Solutions" />
-
-  <!-- SEO META TAGS -->
   <meta name="author" content="Raymond Digital" />
   <meta name="robots" content="noindex" />
-
-  <!-- OPEN GRAPH / SOCIAL SHARING -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Raymond Digital | ICT & Business Solutions" />
   <meta property="og:locale" content="en_US" />
   <meta property="og:title" content="Raymond Digital — Admin Dashboard" />
   <meta name="twitter:card" content="summary" />
-
-  <!-- FAVICON SUPPORT -->
   <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png" />
-
-  <!-- FONTS -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet" />
-
-  <!-- STYLESHEET -->
   <link rel="stylesheet" href="assets/css/style.css" />
-
   <!-- Supabase JavaScript library (must load BEFORE supabase.js) -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>console.log('Raymond Digital: window.supabase before config:', window.supabase);</script>
   <script src="assets/js/supabase.js"></script>
+
+  <!-- Admin Dashboard Scoped Styles -->
+  <style>
+    .admin-body{background:var(--bg-alt);color:var(--ink);}
+    .admin-app{display:flex;min-height:100vh;background:var(--bg-alt);}
+    /* Sidebar */
+    .admin-sidebar{width:268px;flex-shrink:0;background:var(--navy-950);color:#E2E8F0;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow:hidden;border-right:1px solid rgba(255,255,255,0.08);}
+    .admin-sidebar-brand{padding:28px 24px 22px;border-bottom:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;gap:14px;}
+    .admin-sidebar-logo{width:44px;height:44px;border-radius:12px;background:var(--grad-accent);display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--font-head);font-weight:800;font-size:18px;letter-spacing:-0.02em;flex-shrink:0;}
+    .admin-sidebar-brand h2{font-family:var(--font-head);font-size:15px;font-weight:700;color:#fff;line-height:1.1;margin:0;}
+    .admin-sidebar-brand p{font-size:12px;color:#94A3B8;margin:2px 0 0;font-weight:500;}
+    .admin-sidebar-nav{flex:1;padding:18px 14px;overflow-y:auto;}
+    .admin-nav-label{font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:#64748B;font-weight:600;padding:8px 10px 6px;margin-top:6px;}
+    .admin-nav-item{display:flex;align-items:center;gap:11px;padding:11px 12px;border-radius:10px;color:#CBD5E1;font-size:14px;font-weight:500;cursor:pointer;transition:all .2s var(--ease);text-decoration:none;width:100%;border:none;background:transparent;font-family:inherit;text-align:left;}
+    .admin-nav-item:hover{background:rgba(255,255,255,0.06);color:#fff;}
+    .admin-nav-item.active{background:rgba(6,182,212,0.14);color:#fff;box-shadow:inset 0 0 0 1px rgba(6,182,212,0.22);}
+    .admin-nav-item.active .admin-nav-icon{background:rgba(6,182,212,0.18);}
+    .admin-nav-icon{width:34px;height:34px;border-radius:9px;background:rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:15px;}
+    .admin-sidebar-footer{padding:16px 14px;border-top:1px solid rgba(255,255,255,0.08);}
+    .admin-logout-btn{width:100%;display:flex;align-items:center;gap:11px;padding:11px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.04);color:#E2E8F0;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s;}
+    .admin-logout-btn:hover{background:rgba(239,68,68,0.12);border-color:rgba(239,68,68,0.25);color:#FECACA;}
+    /* Main */
+    .admin-main{flex:1;min-width:0;display:flex;flex-direction:column;}
+    .admin-header{background:#fff;border-bottom:1px solid var(--line);padding:18px 28px;display:flex;align-items:center;justify-content:space-between;gap:20px;position:sticky;top:0;z-index:20;}
+    .admin-header-left{display:flex;align-items:center;gap:16px;min-width:0;}
+    .admin-menu-toggle{display:none;width:42px;height:42px;border-radius:10px;border:1px solid var(--line);background:#fff;color:var(--ink);font-size:18px;cursor:pointer;align-items:center;justify-content:center;}
+    .admin-header h1{font-family:var(--font-head);font-size:22px;font-weight:800;color:var(--ink);margin:0;line-height:1.1;}
+    .admin-header p{font-size:13px;color:var(--muted);margin:2px 0 0;font-weight:500;}
+    .admin-header-right{display:flex;align-items:center;gap:14px;flex-shrink:0;}
+    .admin-identity{display:flex;align-items:center;gap:12px;padding:6px 12px 6px 6px;background:var(--bg-alt);border:1px solid var(--line);border-radius:999px;}
+    .admin-avatar{width:34px;height:34px;border-radius:999px;background:var(--grad-navy);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;}
+    .admin-identity strong{font-size:13px;color:var(--ink);display:block;line-height:1;}
+    .admin-identity span{font-size:11px;color:var(--muted);line-height:1;}
+    .admin-content{padding:28px;flex:1;max-width:1280px;width:100%;margin:0 auto;}
+    /* Stat cards */
+    .admin-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-bottom:22px;}
+    .admin-stat-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:var(--shadow-sm);position:relative;overflow:hidden;}
+    .admin-stat-card::after{content:"";position:absolute;top:0;right:0;width:90px;height:90px;background:radial-gradient(circle at 30% 30%, rgba(6,182,212,0.10), transparent 60%);}
+    .admin-stat-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;position:relative;z-index:1;}
+    .admin-stat-icon{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+    .admin-stat-icon--total{background:#EEF2FF;color:#4338CA;border:1px solid #E0E7FF;}
+    .admin-stat-icon--new{background:#ECFDF5;color:#047857;border:1px solid #D1FAE5;}
+    .admin-stat-icon--service{background:#FFF7ED;color:#9A3412;border:1px solid #FFEDD5;}
+    .admin-stat-icon--recent{background:#F0F9FF;color:#0369A1;border:1px solid #E0F2FE;}
+    .admin-stat-label{font-size:12px;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;color:var(--muted);margin:0 0 6px;}
+    .admin-stat-value{font-family:var(--font-head);font-size:32px;font-weight:800;color:var(--ink);line-height:1;margin:0;}
+    .admin-stat-hint{font-size:12px;color:var(--muted);margin-top:6px;font-weight:500;}
+    /* Enquiries card */
+    .admin-enquiries-card{background:#fff;border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow-sm);overflow:hidden;}
+    .admin-enquiries-head{padding:18px 20px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+    .admin-enquiries-head h3{font-family:var(--font-head);font-size:16px;font-weight:700;color:var(--ink);margin:0;}
+    .admin-enquiries-head p{font-size:12px;color:var(--muted);margin:2px 0 0;}
+    .admin-toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+    .admin-search-wrap{position:relative;display:flex;align-items:center;}
+    .admin-search{width:260px;max-width:42vw;padding:10px 14px 10px 36px;border:1.5px solid var(--line);border-radius:999px;font-size:13px;font-family:inherit;color:var(--ink);background:#FBFDFE;transition:border-color .2s, box-shadow .2s, background .2s;}
+    .admin-search:focus{outline:none;background:#fff;border-color:var(--accent);box-shadow:0 0 0 4px rgba(6,182,212,0.12);}
+    .admin-search-icon{position:absolute;left:12px;color:var(--muted);pointer-events:none;font-size:14px;}
+    .admin-filter{padding:10px 34px 10px 14px;border:1.5px solid var(--line);border-radius:999px;font-size:13px;font-weight:600;color:var(--ink);background:#FBFDFE;font-family:inherit;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748B' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;cursor:pointer;}
+    .admin-filter:focus{outline:none;border-color:var(--accent);background-color:#fff;}
+    .admin-btn-refresh{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:999px;border:1px solid var(--line);background:#fff;color:var(--ink);font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s;white-space:nowrap;}
+    .admin-btn-refresh:hover{background:var(--bg-alt);border-color:#CBD5E1;}
+    .admin-btn-refresh:disabled{opacity:.6;cursor:not-allowed;}
+    .admin-btn-refresh .admin-spinner{width:14px;height:14px;border:2px solid var(--line);border-top-color:var(--primary);border-radius:999px;display:none;animation:adminSpin .7s linear infinite;}
+    .admin-btn-refresh.is-loading .admin-spinner{display:inline-block;}
+    @keyframes adminSpin{to{transform:rotate(360deg);}}
+    .admin-status-line{padding:12px 20px;font-size:13px;font-weight:600;color:var(--muted);border-bottom:1px solid var(--line);display:none;}
+    .admin-status-line.show{display:block;}
+    .admin-status-line.bad{color:#DC2626;background:#FEF2F2;}
+    .admin-status-line.ok{color:#047857;background:#ECFDF5;}
+    /* Table */
+    .admin-table-wrap{overflow-x:auto;}
+    .admin-table{width:100%;border-collapse:separate;border-spacing:0;min-width:760px;}
+    .admin-table thead th{font-size:11px;letter-spacing:0.07em;text-transform:uppercase;color:var(--muted);font-weight:700;padding:13px 16px;text-align:left;background:#F8FAFC;border-bottom:1px solid var(--line);white-space:nowrap;}
+    .admin-table tbody td{padding:16px;font-size:13px;color:var(--ink);border-bottom:1px solid #F1F5F9;vertical-align:top;line-height:1.5;}
+    .admin-table tbody tr:hover td{background:#F8FAFC;}
+    .admin-table .admin-cell-name strong{font-weight:700;color:var(--ink);display:block;font-size:13px;}
+    .admin-table .admin-cell-name span{font-size:12px;color:var(--muted);}
+    .admin-cell-msg{max-width:260px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--body);}
+    .admin-status-badge{display:inline-flex;align-items:center;padding:4px 10px;border-radius:999px;font-size:11px;font-weight:800;letter-spacing:0.04em;text-transform:uppercase;border:1px solid transparent;}
+    .admin-status-badge.status-new{background:#ECFDF5;color:#065F46;border-color:#A7F3D0;}
+    .admin-status-badge.status-contacted{background:#EFF6FF;color:#1E40AF;border-color:#BFDBFE;}
+    .admin-status-badge.status-in-progress{background:#FFF7ED;color:#9A3412;border-color:#FED7AA;}
+    .admin-status-badge.status-completed{background:#F0FDF4;color:#14532D;border-color:#BBF7D0;}
+    .admin-status-badge.status-archived{background:#F1F5F9;color:#475569;border-color:#E2E8F0;}
+    .admin-action-btn{padding:7px 12px;border-radius:999px;border:1px solid var(--line);background:#fff;color:var(--primary);font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s;}
+    .admin-action-btn:hover{background:var(--primary);color:#fff;border-color:var(--primary);}
+    /* Mobile cards */
+    .admin-enquiry-cards{display:none;padding:14px;gap:14px;flex-direction:column;}
+    .admin-enquiry-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:0 2px 10px rgba(10,37,64,0.06);}
+    .admin-enquiry-card-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:12px;}
+    .admin-enquiry-card-name{font-weight:800;color:var(--ink);font-size:14px;margin:0;}
+    .admin-enquiry-card-meta{font-size:12px;color:var(--muted);margin-top:2px;}
+    .admin-enquiry-card-msg{font-size:13px;color:var(--body);line-height:1.6;margin:10px 0 12px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+    .admin-enquiry-card-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:12px;color:var(--muted);}
+    .admin-enquiry-card-foot strong{color:var(--ink);}
+    /* Empty / Error / Loading */
+    .admin-empty{padding:44px 20px;text-align:center;color:var(--muted);}
+    .admin-empty-icon{width:56px;height:56px;border-radius:16px;background:var(--bg-alt);border:1px solid var(--line);display:inline-flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:14px;}
+    .admin-empty h4{font-family:var(--font-head);font-size:15px;color:var(--ink);margin:0 0 6px;}
+    .admin-empty p{font-size:13px;max-width:420px;margin:0 auto;line-height:1.6;}
+    .admin-loading{padding:18px 20px;display:flex;align-items:center;gap:12px;color:var(--muted);font-size:13px;font-weight:600;}
+    .admin-loading-spinner{width:16px;height:16px;border:2px solid var(--line);border-top-color:var(--accent);border-radius:999px;animation:adminSpin .7s linear infinite;}
+    .admin-skeleton{padding:16px;display:grid;gap:10px;}
+    .admin-skeleton-row{height:14px;background:linear-gradient(90deg, #F1F5F9 25%, #E2E8F0 50%, #F1F5F9 75%);background-size:200% 100%;border-radius:8px;animation:adminShimmer 1.2s infinite;}
+    @keyframes adminShimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+    /* Modal */
+    .admin-modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:20px;z-index:80;}
+    .admin-modal.open{display:flex;}
+    .admin-modal-backdrop{position:fixed;inset:0;background:rgba(4,18,43,0.56);backdrop-filter:blur(6px);display:none;z-index:79;}
+    .admin-modal-backdrop.open{display:block;}
+    .admin-modal-card{width:min(640px,100%);max-height:88vh;overflow:auto;background:#fff;border-radius:20px;box-shadow:var(--shadow-lg);border:1px solid var(--line);position:relative;}
+    .admin-modal-head{padding:20px 22px 16px;border-bottom:1px solid var(--line);display:flex;align-items:flex-start;justify-content:space-between;gap:16px;position:sticky;top:0;background:#fff;z-index:1;border-radius:20px 20px 0 0;}
+    .admin-modal-head h3{font-family:var(--font-head);font-size:16px;font-weight:800;color:var(--ink);margin:0;}
+    .admin-modal-head p{font-size:12px;color:var(--muted);margin:4px 0 0;}
+    .admin-modal-close{width:36px;height:36px;border-radius:999px;border:1px solid var(--line);background:#fff;color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+    .admin-modal-close:hover{background:var(--bg-alt);color:var(--ink);}
+    .admin-modal-body{padding:20px 22px 22px;display:grid;gap:14px;}
+    .admin-detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+    .admin-detail{padding:12px 14px;background:var(--bg-alt);border:1px solid var(--line);border-radius:12px;}
+    .admin-detail label{font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:var(--muted);font-weight:700;display:block;margin-bottom:4px;}
+    .admin-detail div{font-size:13px;font-weight:600;color:var(--ink);word-break:break-word;}
+    .admin-detail--full{grid-column:1 / -1;}
+    .admin-detail-msg{white-space:pre-wrap;line-height:1.7;font-weight:500;}
+    /* Responsive */
+    @media (max-width: 1024px){.admin-stats{grid-template-columns:repeat(2,1fr);}}
+    @media (max-width: 900px){
+      .admin-sidebar{position:fixed;inset:0 auto 0 0;transform:translateX(-100%);transition:transform .28s var(--ease);z-index:60;box-shadow:var(--shadow-lg);}
+      .admin-sidebar.open{transform:translateX(0);}
+      .admin-app.sidebar-open .admin-sidebar-backdrop{display:block;}
+      .admin-sidebar-backdrop{display:none;position:fixed;inset:0;background:rgba(4,18,43,0.45);z-index:59;}
+      .admin-menu-toggle{display:inline-flex;}
+      .admin-header{padding:14px 16px;}
+      .admin-content{padding:16px;}
+      .admin-search{width:180px;}
+    }
+    @media (max-width: 640px){
+      .admin-stats{grid-template-columns:1fr;}
+      .admin-table-wrap{display:none;}
+      .admin-enquiry-cards{display:flex;}
+      .admin-toolbar{width:100%;}
+      .admin-search{flex:1;width:auto;max-width:none;}
+      .admin-detail-grid{grid-template-columns:1fr;}
+      .admin-header p{display:none;}
+      .admin-identity span{display:none;}
+    }
+  </style>
 
   <script>
     // ============================================================
@@ -48,6 +183,9 @@
 
       let dashboardInitialized = false;
       let redirecting = false;
+      let allEnquiries = [];
+      let currentSearch = '';
+      let currentStatus = 'all';
 
       // ------------------------------------------------------------
       // Authentication / session check
@@ -55,47 +193,20 @@
       async function checkSession() {
         try {
           console.log('Raymond Digital: Checking Supabase session...');
-
           const { data, error } = await raymondSupabase.auth.getSession();
-
           console.log('Raymond Digital: getSession result', data);
-          console.log(
-            'Raymond Digital: session object',
-            data ? data.session : null
-          );
-
-          if (error) {
-            console.error('Raymond Digital: getSession error', error);
-            return false;
-          }
-
+          console.log('Raymond Digital: session object', data ? data.session : null);
+          if (error) { console.error('Raymond Digital: getSession error', error); return false; }
           if (!data || !data.session) {
-            console.log(
-              'Raymond Digital: No session found, redirecting to admin.html'
-            );
-
-            if (!redirecting) {
-              redirecting = true;
-              window.location.replace('admin.html');
-            }
-
+            console.log('Raymond Digital: No session found, redirecting to admin.html');
+            if (!redirecting) { redirecting = true; window.location.replace('admin.html'); }
             return false;
           }
-
-          console.log(
-            'Raymond Digital: Session found, proceeding with dashboard',
-            data.session.user ? data.session.user.email : ''
-          );
-
+          console.log('Raymond Digital: Session found, proceeding with dashboard', data.session.user ? data.session.user.email : '');
           return true;
         } catch (err) {
           console.error('Raymond Digital: Session check failed', err);
-
-          if (!redirecting) {
-            redirecting = true;
-            window.location.replace('admin.html');
-          }
-
+          if (!redirecting) { redirecting = true; window.location.replace('admin.html'); }
           return false;
         }
       }
@@ -104,172 +215,212 @@
       // Elements
       // ------------------------------------------------------------
       const logoutBtn = document.getElementById('dashboardLogout');
+      const logoutBtnHeader = document.getElementById('dashboardLogoutHeader');
       const refreshBtn = document.getElementById('dashboardRefresh');
       const statusText = document.getElementById('dashboardStatus');
       const totalEnqEl = document.getElementById('totalEnquiries');
       const newEnqEl = document.getElementById('newEnquiries');
       const enquiriesTable = document.getElementById('enquiriesTable');
       const enquiriesTbody = document.getElementById('enquiriesTbody');
-      const refreshSpinner = document.getElementById('refreshSpinner');
+      const enquiryCards = document.getElementById('adminEnquiryCards');
+      const searchInput = document.getElementById('adminSearch');
+      const statusFilter = document.getElementById('adminStatusFilter');
+      const emptyState = document.getElementById('adminEmptyState');
+      const errorState = document.getElementById('adminErrorState');
+      const loadingState = document.getElementById('adminLoadingState');
+      const modal = document.getElementById('adminEnquiryModal');
+      const modalBackdrop = document.getElementById('adminModalBackdrop');
+      const menuToggle = document.getElementById('adminMenuToggle');
+      const sidebar = document.getElementById('adminSidebar');
+      const sidebarBackdrop = document.getElementById('adminSidebarBackdrop');
 
-      function showElement(el) {
-        if (el) el.style.display = '';
+      function showElement(el) { if (el) el.style.display = ''; }
+      function hideElement(el) { if (el) el.style.display = 'none'; }
+      function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
+
+      function getStatus(row){ return (row.status || 'new').toLowerCase(); }
+      function statusLabel(s){ return s === 'new' ? 'NEW' : s.replace('-',' ').toUpperCase(); }
+
+      // ------------------------------------------------------------
+      // Render helpers
+      // ------------------------------------------------------------
+      function filteredData(){
+        return allEnquiries.filter(function(row){
+          const st = getStatus(row);
+          const matchStatus = currentStatus === 'all' || st === currentStatus;
+          if (!matchStatus) return false;
+          if (!currentSearch) return true;
+          const q = currentSearch.toLowerCase();
+          return [row.name,row.email,row.phone,row.service,row.message].some(function(v){
+            return String(v||'').toLowerCase().includes(q);
+          });
+        });
       }
 
-      function hideElement(el) {
-        if (el) el.style.display = 'none';
+      function renderEnquiries(){
+        const data = filteredData();
+        if (!data || data.length === 0) {
+          enquiriesTbody.innerHTML = '';
+          if (enquiryCards) enquiryCards.innerHTML = '';
+          if (allEnquiries.length === 0) {
+            showElement(emptyState); hideElement(errorState);
+          } else {
+            hideElement(emptyState);
+            enquiriesTbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:28px 16px;color:var(--muted);font-size:13px;font-weight:600;">No enquiries match your search.</td></tr>';
+            if (enquiryCards) enquiryCards.innerHTML = '<div style="text-align:center;padding:18px;color:var(--muted);font-size:13px;font-weight:600;">No enquiries match your search.</div>';
+          }
+          return;
+        }
+        hideElement(emptyState); hideElement(errorState);
+
+        // Table
+        enquiriesTbody.innerHTML = '';
+        data.forEach(function(row){
+          const created = row.created_at ? new Date(row.created_at).toLocaleString() : '—';
+          const st = getStatus(row);
+          const tr = document.createElement('tr');
+          tr.innerHTML =
+            '<td class="admin-cell-name"><strong>'+escapeHtml(row.name||'—')+'</strong><span>'+escapeHtml(row.email||'')+'</span></td>' +
+            '<td style="color:var(--muted);font-weight:500;">'+escapeHtml(row.email||'—')+'</td>' +
+            '<td>'+escapeHtml(row.phone||'—')+'</td>' +
+            '<td><span style="font-weight:600;background:var(--bg-alt);border:1px solid var(--line);padding:4px 8px;border-radius:999px;font-size:11px;">'+escapeHtml(row.service||'—')+'</span></td>' +
+            '<td class="admin-cell-msg" title="'+escapeHtml((row.message||'').substring(0,120))+'">'+escapeHtml(row.message ? row.message.substring(0,44)+'…' : '—')+'</td>' +
+            '<td style="white-space:nowrap;color:var(--muted);font-size:12px;">'+escapeHtml(created)+'</td>' +
+            '<td><span class="admin-status-badge status-'+st+'">'+escapeHtml(statusLabel(st))+'</span></td>' +
+            '<td><button class="admin-action-btn" data-view="'+row.id+'">View</button></td>';
+          enquiriesTbody.appendChild(tr);
+        });
+        // Mobile cards
+        if (enquiryCards) {
+          enquiryCards.innerHTML = '';
+          data.forEach(function(row){
+            const created = row.created_at ? new Date(row.created_at).toLocaleDateString() : '—';
+            const st = getStatus(row);
+            const card = document.createElement('div');
+            card.className = 'admin-enquiry-card';
+            card.innerHTML =
+              '<div class="admin-enquiry-card-head"><div><p class="admin-enquiry-card-name">'+escapeHtml(row.name||'—')+'</p><p class="admin-enquiry-card-meta">'+escapeHtml(row.email||'—')+' · '+escapeHtml(row.service||'—')+'</p></div><span class="admin-status-badge status-'+st+'">'+escapeHtml(statusLabel(st))+'</span></div>' +
+              '<p class="admin-enquiry-card-msg">'+escapeHtml(row.message||'—')+'</p>' +
+              '<div class="admin-enquiry-card-foot"><span>'+escapeHtml(created)+' · '+escapeHtml(row.phone||'—')+'</span><button class="admin-action-btn" data-view="'+row.id+'">View</button></div>';
+            enquiryCards.appendChild(card);
+          });
+        }
+        // Attach view handlers
+        document.querySelectorAll('[data-view]').forEach(function(btn){
+          btn.addEventListener('click', function(){ openModal(btn.getAttribute('data-view')); });
+        });
       }
+
+      function openModal(id){
+        const row = allEnquiries.find(function(r){ return String(r.id)===String(id); });
+        if (!row) return;
+        document.getElementById('modalName').textContent = row.name || '—';
+        document.getElementById('modalEmail').textContent = row.email || '—';
+        document.getElementById('modalPhone').textContent = row.phone || '—';
+        document.getElementById('modalService').textContent = row.service || '—';
+        document.getElementById('modalDate').textContent = row.created_at ? new Date(row.created_at).toLocaleString() : '—';
+        document.getElementById('modalStatus').textContent = statusLabel(getStatus(row));
+        document.getElementById('modalStatus').className = 'admin-status-badge status-'+getStatus(row);
+        document.getElementById('modalMessage').textContent = row.message || '—';
+        modal.classList.add('open'); modalBackdrop.classList.add('open'); modal.setAttribute('aria-hidden','false');
+        document.body.style.overflow='hidden';
+      }
+      function closeModal(){ modal.classList.remove('open'); modalBackdrop.classList.remove('open'); modal.setAttribute('aria-hidden','true'); document.body.style.overflow=''; }
+      if (modal) modal.querySelector('[data-close-modal]').addEventListener('click', closeModal);
+      if (modalBackdrop) modalBackdrop.addEventListener('click', closeModal);
+      document.addEventListener('keydown', function(e){ if(e.key==='Escape' && modal.classList.contains('open')) closeModal(); });
 
       // ------------------------------------------------------------
       // Fetch enquiries
       // ------------------------------------------------------------
       async function loadEnquiries() {
         if (!raymondSupabase || !enquiriesTbody) return;
-
-        showElement(statusText);
-        statusText.textContent = 'Loading enquiries…';
-        showElement(refreshSpinner);
-        hideElement(refreshBtn);
-        hideElement(enquiriesTable);
-
+        hideElement(emptyState); hideElement(errorState);
+        showElement(loadingState);
+        if (statusText){ statusText.textContent = ''; statusText.className='admin-status-line'; hideElement(statusText); }
+        if (refreshBtn){ refreshBtn.disabled=true; refreshBtn.classList.add('is-loading'); }
         try {
-          const { data, error } = await raymondSupabase
-            .from('contact_messages')
-            .select('*')
-            .order('created_at', { ascending: false });
-
+          const { data, error } = await raymondSupabase.from('contact_messages').select('*').order('created_at', { ascending: false });
           if (error) {
-            console.error(
-              'Raymond Digital: Dashboard enquiry query error:',
-              error
-            );
-
-            statusText.textContent =
-              'Unable to load enquiries. Please check the Supabase permissions for the authenticated admin account.';
+            console.error('Raymond Digital: Dashboard enquiry query error:', error);
+            hideElement(loadingState);
+            showElement(errorState);
+            if (statusText){ statusText.textContent='Unable to load enquiries. Please check your connection and try again.'; statusText.className='admin-status-line show bad'; showElement(statusText); }
             return;
           }
-
-          const total = data ? data.length : 0;
+          allEnquiries = data || [];
+          const total = allEnquiries.length;
           let newCount = 0;
-
-          if (data) {
-            data.forEach(function (row) {
-              if ((row.status || 'new') === 'new') newCount++;
-            });
-          }
-
+          allEnquiries.forEach(function(row){ if ((row.status || 'new') === 'new') newCount++; });
           if (totalEnqEl) totalEnqEl.textContent = total;
           if (newEnqEl) newEnqEl.textContent = newCount;
-
-          if (!data || data.length === 0) {
-            enquiriesTbody.innerHTML =
-              '<tr><td class="text-center" colspan="7">No enquiries found.</td></tr>';
-            showElement(enquiriesTable);
-            hideElement(statusText);
-            return;
-          }
-
-          enquiriesTbody.innerHTML = '';
-
-          data.forEach(function (row) {
-            const created = row.created_at
-              ? new Date(row.created_at).toLocaleString()
-              : '—';
-
-            const tr = document.createElement('tr');
-
-            tr.innerHTML =
-              '<td>' + (row.name || '—') + '</td>' +
-              '<td>' + (row.email || '—') + '</td>' +
-              '<td>' + (row.phone || '—') + '</td>' +
-              '<td>' + (row.service || '—') + '</td>' +
-              '<td title="' +
-              (row.message || '').substring(0, 80) +
-              '">' +
-              (row.message
-                ? row.message.substring(0, 30) + '…'
-                : '—') +
-              '</td>' +
-              '<td>' + created + '</td>' +
-              '<td><span class="status-badge status-' +
-              (row.status || 'new') +
-              '">' +
-              (row.status || 'new') +
-              '</span></td>';
-
-            enquiriesTbody.appendChild(tr);
-          });
-
-          showElement(enquiriesTable);
-          hideElement(statusText);
+          const svcCount = new Set(allEnquiries.map(function(r){ return r.service; }).filter(Boolean)).size;
+          const recentEl = document.getElementById('recentEnquiries');
+          if (recentEl) recentEl.textContent = total ? new Date(allEnquiries[0].created_at).toLocaleDateString() : '—';
+          const svcEl = document.getElementById('serviceVariety');
+          if (svcEl) svcEl.textContent = svcCount || '—';
+          hideElement(loadingState);
+          if (total === 0){ showElement(emptyState); enquiriesTbody.innerHTML=''; if(enquiryCards) enquiryCards.innerHTML=''; }
+          else { renderEnquiries(); }
         } catch (err) {
-          console.error(
-            'Raymond Digital: Dashboard enquiry load error:',
-            err
-          );
-
-          statusText.textContent =
-            'Error loading enquiries. See the browser console for details.';
+          console.error('Raymond Digital: Dashboard enquiry load error:', err);
+          hideElement(loadingState); showElement(errorState);
+          if (statusText){ statusText.textContent='Error loading enquiries. See the browser console for details.'; statusText.className='admin-status-line show bad'; showElement(statusText); }
         } finally {
-          hideElement(refreshSpinner);
-          showElement(refreshBtn);
+          if (refreshBtn){ refreshBtn.disabled=false; refreshBtn.classList.remove('is-loading'); }
         }
       }
 
       // ------------------------------------------------------------
-      // Logout
+      // Search / Filter
       // ------------------------------------------------------------
-      if (logoutBtn) {
-        logoutBtn.addEventListener('click', async function () {
-          try {
-            console.log('Raymond Digital: Signing out...');
-
-            const { error } = await raymondSupabase.auth.signOut();
-
-            if (error) {
-              console.error(
-                'Raymond Digital: Sign out error:',
-                error
-              );
-            }
-
-            window.location.replace('admin.html');
-          } catch (err) {
-            console.error(
-              'Raymond Digital: Sign out exception:',
-              err
-            );
-
-            window.location.replace('admin.html');
-          }
+      if (searchInput){
+        searchInput.addEventListener('input', function(){
+          currentSearch = searchInput.value.trim();
+          renderEnquiries();
+        });
+      }
+      if (statusFilter){
+        statusFilter.addEventListener('change', function(){
+          currentStatus = statusFilter.value;
+          renderEnquiries();
         });
       }
 
       // ------------------------------------------------------------
+      // Sidebar toggle
+      // ------------------------------------------------------------
+      function toggleSidebar(open){
+        if (!sidebar) return;
+        const isOpen = open !== undefined ? open : !sidebar.classList.contains('open');
+        sidebar.classList.toggle('open', isOpen);
+        document.querySelector('.admin-app')?.classList.toggle('sidebar-open', isOpen);
+      }
+      if (menuToggle) menuToggle.addEventListener('click', function(){ toggleSidebar(); });
+      if (sidebarBackdrop) sidebarBackdrop.addEventListener('click', function(){ toggleSidebar(false); });
+
+      // ------------------------------------------------------------
+      // Logout
+      // ------------------------------------------------------------
+      async function doLogout(){
+        try { console.log('Raymond Digital: Signing out...'); const { error } = await raymondSupabase.auth.signOut(); if (error) console.error('Raymond Digital: Sign out error:', error); window.location.replace('admin.html'); }
+        catch (err) { console.error('Raymond Digital: Sign out exception:', err); window.location.replace('admin.html'); }
+      }
+      if (logoutBtn) logoutBtn.addEventListener('click', doLogout);
+      if (logoutBtnHeader) logoutBtnHeader.addEventListener('click', doLogout);
+
+      // ------------------------------------------------------------
       // Refresh
       // ------------------------------------------------------------
-      if (refreshBtn) {
-        refreshBtn.addEventListener('click', loadEnquiries);
-      }
+      if (refreshBtn) refreshBtn.addEventListener('click', loadEnquiries);
 
       // ------------------------------------------------------------
       // Authentication state listener
       // ------------------------------------------------------------
       raymondSupabase.auth.onAuthStateChange(function (event, session) {
-        console.log(
-          'Raymond Digital: Auth state changed:',
-          event,
-          session
-        );
-
-        if (
-          event === 'SIGNED_OUT' ||
-          (event === 'TOKEN_EXPIRED' && !session)
-        ) {
-          if (!redirecting) {
-            redirecting = true;
-            window.location.replace('admin.html');
-          }
+        console.log('Raymond Digital: Auth state changed:', event, session);
+        if (event === 'SIGNED_OUT' || (event === 'TOKEN_EXPIRED' && !session)) {
+          if (!redirecting) { redirecting = true; window.location.replace('admin.html'); }
         }
       });
 
@@ -277,150 +428,189 @@
       // Initialize dashboard only after authentication is confirmed
       // ------------------------------------------------------------
       const authenticated = await checkSession();
-
       if (!authenticated) return;
-
       if (dashboardInitialized) return;
       dashboardInitialized = true;
-
-      console.log(
-        'Raymond Digital: Authentication confirmed. Initializing dashboard.'
-      );
-
+      console.log('Raymond Digital: Authentication confirmed. Initializing dashboard.');
       await loadEnquiries();
-
       window.__RAAYDASH_READY = true;
-
       console.log('Raymond Digital: Dashboard initialization complete.');
     });
   </script>
 </head>
-<body>
-  <!-- Skip link for accessibility -->
-  <a href="#mainContent" class="skip-link">Skip to dashboard content</a>
-
-  <main id="mainContent" aria-labelledby="adminDashboardTitle">
-    <div class="page-container">
-      <section class="dashboard-layout min-vh-100">
-        <!-- Sidebar Navigation -->
-        <div class="dashboard-sidebar">
-          <div class="sidebar-brand">
-            <svg class="sidebar-brand-icon mb-3" aria-hidden="true">
-              <use href="#i-network" width="32" height="32" /></svg
-            ><span>Raymond Digital</span>
-          </div>
-          <nav class="sidebar-nav">
-            <ul class="nav nav-sidebar">
-              <li class="nav-item active">
-                <a class="nav-link" href="#overview">
-                  <svg class="nav-icon mb-2" aria-hidden="true">
-                    <use href="#i-chart" width="18" height="18" /></svg
-                  ><span>Overview</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#enquiries">
-                  <svg class="nav-icon mb-2" aria-hidden="true">
-                    <use href="#i-mail" width="18" height="18" /></svg
-                  ><span>Enquiries</span>
-                </a>
-              </li>
-              <!-- Future sections can be added here -->
-              <!-- <li class="nav-item">
-                <a class="nav-link" href="#clients">
-                  <svg class="nav-icon mb-2" aria-hidden="true">
-                    <use href="#i-users" width="18" height="18" /></svg
-                  ><span>Clients</span>
-                </a>
-              </li> -->
-            </ul>
-          </nav>
+<body class="admin-body">
+  <div class="admin-app">
+    <div class="admin-sidebar-backdrop" id="adminSidebarBackdrop"></div>
+    <aside class="admin-sidebar" id="adminSidebar" aria-label="Admin navigation">
+      <div class="admin-sidebar-brand">
+        <div class="admin-sidebar-logo">RD</div>
+        <div>
+          <h2>Raymond Digital</h2>
+          <p>ICT &amp; Business Solutions</p>
         </div>
+      </div>
+      <nav class="admin-sidebar-nav" aria-label="Primary">
+        <div class="admin-nav-label">Menu</div>
+        <a class="admin-nav-item active" href="#overview" aria-current="page"><span class="admin-nav-icon">◈</span> Overview</a>
+        <a class="admin-nav-item" href="#enquiries"><span class="admin-nav-icon">✉</span> Enquiries</a>
+        <div class="admin-nav-label" style="margin-top:18px;">Account</div>
+        <button class="admin-nav-item" id="dashboardLogout" type="button"><span class="admin-nav-icon">↗</span> Logout</button>
+      </nav>
+      <div class="admin-sidebar-footer">
+        <div style="font-size:11px;color:#94A3B8;line-height:1.5;">Signed in as<br><strong style="color:#E2E8F0;font-size:12px;word-break:break-all;" id="adminUserEmail">admin</strong></div>
+      </div>
+    </aside>
 
-        <!-- Main Dashboard Content -->
-        <div class="dashboard-content p-4">
-          <!-- Dashboard Header / Stats Overview -->
-          <header class="dashboard-header mb-4" id="overview">
-            <h2 id="adminDashboardTitle" class="dashboard-title">
-              Admin Dashboard
-            </h2>
-          </header>
-
-          <!-- Stats Cards Row -->
-          <div class="row mb-4 g-3" id="statsCards">
-            <div class="col-12 col-md-6 col-lg-3">
-              <div class="card card-stat">
-                <div class="card-body">
-                  <div class="stat-value" id="totalEnquiries">0</div>
-                  <h6 class="stat-label text-muted">Total Enquiries</h6>
-                </div>
-              </div>
-            </div>
-            <div class="col-12 col-md-6 col-lg-3">
-              <div class="card card-stat">
-                <div class="card-body">
-                  <div class="stat-value" id="newEnquiries">0</div>
-                  <h6 class="stat-label text-muted">New Enquiries</h6>
-                </div>
-              </div>
-            </div>
+    <div class="admin-main">
+      <header class="admin-header">
+        <div class="admin-header-left">
+          <button class="admin-menu-toggle" id="adminMenuToggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
+          <div>
+            <h1 id="adminDashboardTitle">Dashboard</h1>
+            <p>Welcome back, Raymond.</p>
           </div>
+        </div>
+        <div class="admin-header-right">
+          <div class="admin-identity">
+            <div class="admin-avatar">R</div>
+            <div><strong>Raymond</strong><span>Administrator</span></div>
+          </div>
+          <button class="admin-logout-btn" id="dashboardLogoutHeader" type="button" style="padding:9px 14px;width:auto;">Logout</button>
+        </div>
+      </header>
 
-          <!-- Enquiries Listing Section -->
-          <section class="card" id="enquiries">
-            <div class="card-header d-flex justify-content-between align-items-center">
-              <h3 class="card-title mb-0">Recent Enquiries</h3>
-              <button
-                id="dashboardRefresh"
-                class="btn btn-link text-secondary small"
-                type="button"
-                aria-label="Refresh enquiries"
-              >
-                <svg class="svg-icon svg-icon-sm mb-n2" aria-hidden="true">
-                  <use href="#i-refresh" width="16" height="16" /></svg
-                >
-                Refresh
+      <main class="admin-content" id="mainContent">
+        <!-- Stats -->
+        <section class="admin-stats" id="overview" aria-label="Overview statistics">
+          <div class="admin-stat-card">
+            <div style="flex:1;position:relative;z-index:1;">
+              <p class="admin-stat-label">Total Enquiries</p>
+              <p class="admin-stat-value" id="totalEnquiries">0</p>
+              <p class="admin-stat-hint">All submissions</p>
+            </div>
+            <div class="admin-stat-icon admin-stat-icon--total">▦</div>
+          </div>
+          <div class="admin-stat-card">
+            <div style="flex:1;position:relative;z-index:1;">
+              <p class="admin-stat-label">New Enquiries</p>
+              <p class="admin-stat-value" id="newEnquiries">0</p>
+              <p class="admin-stat-hint">Requires attention</p>
+            </div>
+            <div class="admin-stat-icon admin-stat-icon--new">✦</div>
+          </div>
+          <div class="admin-stat-card">
+            <div style="flex:1;position:relative;z-index:1;">
+              <p class="admin-stat-label">Services</p>
+              <p class="admin-stat-value" id="serviceVariety">—</p>
+              <p class="admin-stat-hint">Distinct services</p>
+            </div>
+            <div class="admin-stat-icon admin-stat-icon--service">⬡</div>
+          </div>
+          <div class="admin-stat-card">
+            <div style="flex:1;position:relative;z-index:1;">
+              <p class="admin-stat-label">Latest</p>
+              <p class="admin-stat-value" id="recentEnquiries" style="font-size:18px;padding-top:6px;">—</p>
+              <p class="admin-stat-hint">Most recent enquiry</p>
+            </div>
+            <div class="admin-stat-icon admin-stat-icon--recent">◷</div>
+          </div>
+        </section>
+
+        <!-- Enquiries -->
+        <section class="admin-enquiries-card" id="enquiries" aria-label="Recent enquiries">
+          <div class="admin-enquiries-head">
+            <div>
+              <h3>Recent Enquiries</h3>
+              <p>Website submissions from <code style="font-size:11px;background:var(--bg-alt);padding:2px 6px;border-radius:6px;border:1px solid var(--line);">contact_messages</code></p>
+            </div>
+            <div class="admin-toolbar">
+              <label class="admin-search-wrap" aria-label="Search enquiries">
+                <span class="admin-search-icon">⌕</span>
+                <input class="admin-search" id="adminSearch" type="search" placeholder="Search enquiries..." autocomplete="off" />
+              </label>
+              <select class="admin-filter" id="adminStatusFilter" aria-label="Filter by status">
+                <option value="all">All status</option>
+                <option value="new">New</option>
+                <option value="contacted">Contacted</option>
+                <option value="in-progress">In Progress</option>
+                <option value="completed">Completed</option>
+                <option value="archived">Archived</option>
+              </select>
+              <button class="admin-btn-refresh" id="dashboardRefresh" type="button" aria-label="Refresh enquiries">
+                <span class="admin-spinner" id="refreshSpinner" aria-hidden="true"></span> Refresh
               </button>
-              <span id="dashboardStatus" class="small text-muted"></span>
-            </div>
-            <div class="card-body p-0">
-              <div class="table-responsive">
-                <table class="table table-sm mb-0">
-                  <thead>
-                    <tr>
-                      <th>Name</th>
-                      <th>Email</th>
-                      <th>Phone</th>
-                      <th>Service</th>
-                      <th>Message</th>
-                      <th>Date</th>
-                      <th>Status</th>
-                    </tr>
-                  </thead>
-                  <tbody id="enquiriesTbody">
-                    <!-- Rows injected by JavaScript -->
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </section>
-        </div>
-
-        <!-- Logout area at bottom of main content -->
-        <footer class="dashboard-footer mt-auto small"
-                style="color: var(--muted); border-top: 1px solid var(--line);">
-          <div class="container">
-            <div class="row">
-              <div class="col-12">
-                <p>
-                  Raymond Digital — Admin Area&nbsp;&nbsp;|&nbsp;&nbsp;
-                  <a href="mailto:raymonddigitalx@gmail.com">Contact</a>
-                </p>
-              </div>
             </div>
           </div>
-        </footer>
-      </section>
-    </main>
-  </body>
+
+          <div class="admin-status-line" id="dashboardStatus" role="status" aria-live="polite"></div>
+
+          <div class="admin-loading" id="adminLoadingState">
+            <span class="admin-loading-spinner" aria-hidden="true"></span> Loading enquiries…
+          </div>
+
+          <div class="admin-table-wrap">
+            <table class="admin-table" id="enquiriesTable" aria-label="Enquiries table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Phone</th>
+                  <th>Service</th>
+                  <th>Message</th>
+                  <th>Date</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="enquiriesTbody"></tbody>
+            </table>
+          </div>
+
+          <div class="admin-enquiry-cards" id="adminEnquiryCards" aria-label="Enquiries cards"></div>
+
+          <div class="admin-empty" id="adminEmptyState" style="display:none;">
+            <div class="admin-empty-icon">✉</div>
+            <h4>No enquiries yet</h4>
+            <p>New enquiries submitted through the website will appear here.</p>
+          </div>
+
+          <div class="admin-empty" id="adminErrorState" style="display:none;">
+            <div class="admin-empty-icon" style="background:#FEF2F2;border-color:#FECACA;color:#DC2626;">!</div>
+            <h4>Unable to load enquiries</h4>
+            <p>Please check your connection and try again. <button class="admin-action-btn" onclick="document.getElementById('dashboardRefresh').click()" style="margin-top:10px;">Try again</button></p>
+          </div>
+        </section>
+
+        <p style="text-align:center;font-size:11px;color:var(--muted);margin:18px 0 4px;">Raymond Digital — Admin Portal · Secured by Supabase Auth</p>
+      </main>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="admin-modal-backdrop" id="adminModalBackdrop" aria-hidden="true"></div>
+  <div class="admin-modal" id="adminEnquiryModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="admin-modal-card">
+      <div class="admin-modal-head">
+        <div>
+          <h3 id="modalTitle">Enquiry details</h3>
+          <p>Full submission from the website</p>
+        </div>
+        <button class="admin-modal-close" data-close-modal aria-label="Close">✕</button>
+      </div>
+      <div class="admin-modal-body">
+        <div class="admin-detail-grid">
+          <div class="admin-detail"><label>Full name</label><div id="modalName">—</div></div>
+          <div class="admin-detail"><label>Email</label><div id="modalEmail">—</div></div>
+          <div class="admin-detail"><label>Phone</label><div id="modalPhone">—</div></div>
+          <div class="admin-detail"><label>Service</label><div id="modalService">—</div></div>
+          <div class="admin-detail"><label>Date</label><div id="modalDate">—</div></div>
+          <div class="admin-detail"><label>Status</label><div><span id="modalStatus" class="admin-status-badge status-new">NEW</span></div></div>
+          <div class="admin-detail admin-detail--full"><label>Complete message</label><div id="modalMessage" class="admin-detail-msg">—</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>document.addEventListener('DOMContentLoaded', function(){ var s=document.getElementById('adminUserEmail'); if(s && window.raymondSupabase){ window.raymondSupabase.auth.getUser().then(function(r){ if(r && r.data && r.data.user && r.data.user.email) s.textContent=r.data.user.email; }); } });</script>
+</body>
 </html>
