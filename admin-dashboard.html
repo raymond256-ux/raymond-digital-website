@@ -71,8 +71,10 @@
     .admin-stat-icon{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
     .admin-stat-icon--total{background:#EEF2FF;color:#4338CA;border:1px solid #E0E7FF;}
     .admin-stat-icon--new{background:#ECFDF5;color:#047857;border:1px solid #D1FAE5;}
-    .admin-stat-icon--service{background:#FFF7ED;color:#9A3412;border:1px solid #FFEDD5;}
-    .admin-stat-icon--recent{background:#F0F9FF;color:#0369A1;border:1px solid #E0F2FE;}
+    .admin-stat-icon--in-progress{background:#FFF7ED;color:#9A3412;border:1px solid #FED7AA;}
+    .admin-stat-icon--contacted{background:#EFF6FF;color:#1E40AF;border:1px solid #BFDBFE;}
+    .admin-stat-icon--completed{background:#F0FDF4;color:#14532D;border:1px solid #BBF7D0;}
+    .admin-stat-icon--archived{background:#F1F5F9;color:#475569;border:1px solid #E2E8F0;}
     .admin-stat-label{font-size:12px;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;color:var(--muted);margin:0 0 6px;}
     .admin-stat-value{font-family:var(--font-head);font-size:32px;font-weight:800;color:var(--ink);line-height:1;margin:0;}
     .admin-stat-hint{font-size:12px;color:var(--muted);margin-top:6px;font-weight:500;}
@@ -153,8 +155,9 @@
     .admin-detail--full{grid-column:1 / -1;}
     .admin-detail-msg{white-space:pre-wrap;line-height:1.7;font-weight:500;}
     /* Responsive */
-    @media (max-width: 1024px){.admin-stats{grid-template-columns:repeat(2,1fr);}}
+    @media (max-width: 1200px){.admin-stats{grid-template-columns:repeat(3,1fr);}}
     @media (max-width: 900px){
+      .admin-stats{grid-template-columns:repeat(2,1fr);}
       .admin-sidebar{position:fixed;inset:0 auto 0 0;transform:translateX(-100%);transition:transform .28s var(--ease);z-index:60;box-shadow:var(--shadow-lg);}
       .admin-sidebar.open{transform:translateX(0);}
       .admin-app.sidebar-open .admin-sidebar-backdrop{display:block;}
@@ -174,6 +177,34 @@
       .admin-header p{display:none;}
       .admin-identity span{display:none;}
     }
+    /* Polish: keyboard focus + sticky header */
+    .admin-search:focus-visible, .admin-filter:focus-visible, .admin-action-btn:focus-visible,
+    .admin-btn-refresh:focus-visible, .admin-logout-btn:focus-visible, .admin-modal-close:focus-visible,
+    .admin-nav-item:focus-visible, .admin-menu-toggle:focus-visible{
+      outline:2px solid var(--accent); outline-offset:2px;
+    }
+    .admin-table thead th{position:sticky; top:0; z-index:2;}
+    /* Email Composer */
+    .admin-email-composer-body{display:grid;gap:14px;}
+    .admin-email-field{display:grid;gap:4px;}
+    .admin-email-field label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;}
+    .admin-email-recipient{padding:10px 14px;background:var(--bg-alt);border:1.5px solid var(--line);border-radius:10px;font-size:14px;font-weight:600;color:var(--ink);word-break:break-all;}
+    .admin-email-composer-input{padding:10px 14px;border:1.5px solid var(--line);border-radius:10px;font-size:14px;font-family:inherit;color:var(--ink);background:#fff;transition:border-color .2s,box-shadow .2s;}
+    .admin-email-composer-input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 4px rgba(6,182,212,0.12);}
+    .admin-email-composer-input::placeholder{color:var(--muted);}
+    .admin-email-body{width:100%;min-height:120px;padding:12px 14px;border:1.5px solid var(--line);border-radius:10px;font-size:14px;font-family:inherit;color:var(--ink);background:#fff;resize:vertical;line-height:1.6;transition:border-color .2s,box-shadow .2s;}
+    .admin-email-body:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 4px rgba(6,182,212,0.12);}
+    .admin-email-body::placeholder{color:var(--muted);}
+    .admin-email-actions{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;margin-top:6px;}
+    .admin-email-status{padding:10px 14px;border-radius:10px;font-size:13px;font-weight:600;display:none;}
+    .admin-email-status.show{display:block;}
+    .admin-email-status.ok{color:#047857;background:#ECFDF5;}
+    .admin-email-status.bad{color:#DC2626;background:#FEF2F2;}
+    .admin-btn-send{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:999px;border:1px solid var(--primary);background:var(--primary);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s;}
+    .admin-btn-send:hover{opacity:.9;}
+    .admin-btn-send:disabled{opacity:.5;cursor:not-allowed;}
+    .admin-btn-send .admin-spinner{width:14px;height:14px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:999px;display:none;animation:adminSpin .7s linear infinite;}
+    .admin-btn-send.is-loading .admin-spinner{display:inline-block;}
   </style>
 
   <script>
@@ -244,6 +275,8 @@
       const sidebarBackdrop = document.getElementById('adminSidebarBackdrop');
       const modalEmailLink = document.getElementById('modalEmailLink');
       const modalPhoneLink = document.getElementById('modalPhoneLink');
+      const modalStatusSelect = document.getElementById('modalStatusSelect');
+      const modalStatusSave = document.getElementById('modalStatusSave');
 
       function showElement(el) { if (el) el.style.display = ''; }
       function hideElement(el) { if (el) el.style.display = 'none'; }
@@ -277,7 +310,7 @@
             showElement(emptyState); hideElement(errorState);
           } else {
             hideElement(emptyState);
-            enquiriesTbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:28px 16px;color:var(--muted);font-size:13px;font-weight:600;">No enquiries match your search.</td></tr>';
+            enquiriesTbody.innerHTML = '<tr><td colspan="9" style="text-align:center;padding:28px 16px;color:var(--muted);font-size:13px;font-weight:600;">No enquiries match your search.</td></tr>';
             if (enquiryCards) enquiryCards.innerHTML = '<div style="text-align:center;padding:18px;color:var(--muted);font-size:13px;font-weight:600;">No enquiries match your search.</div>';
           }
           return;
@@ -295,10 +328,11 @@
             '<td style="color:var(--muted);font-weight:500;">'+escapeHtml(row.email||'—')+'</td>' +
             '<td>'+escapeHtml(row.phone||'—')+'</td>' +
             '<td><span style="font-weight:600;background:var(--bg-alt);border:1px solid var(--line);padding:4px 8px;border-radius:999px;font-size:11px;">'+escapeHtml(row.service||'—')+'</span></td>' +
+            '<td style="white-space:nowrap;color:var(--muted);font-weight:500;">'+escapeHtml(row.budget||'Not provided')+'</td>' +
             '<td class="admin-cell-msg" title="'+escapeHtml((row.message||'').substring(0,120))+'">'+escapeHtml(row.message ? row.message.substring(0,44)+'…' : '—')+'</td>' +
             '<td style="white-space:nowrap;color:var(--muted);font-size:12px;">'+escapeHtml(created)+'</td>' +
             '<td><span class="admin-status-badge status-'+st+'">'+escapeHtml(statusLabel(st))+'</span></td>' +
-            '<td><button class="admin-action-btn" data-view="'+row.id+'">View</button></td>';
+            '<td><div style="display:flex;gap:6px;flex-wrap:wrap;"><button class="admin-action-btn" data-view="'+row.id+'" style="flex:1;min-width:60px;">View</button><select class="admin-filter" data-status="'+row.id+'" style="flex:1;min-width:110px;padding:6px 28px 6px 10px;font-size:11px;"><option value="new" '+(st==='new'?'selected':'')+'>New</option><option value="in-progress" '+(st==='in-progress'?'selected':'')+'>In Progress</option><option value="contacted" '+(st==='contacted'?'selected':'')+'>Contacted</option><option value="completed" '+(st==='completed'?'selected':'')+'>Completed</option><option value="archived" '+(st==='archived'?'selected':'')+'>Archived</option></select></div></td>';
           enquiriesTbody.appendChild(tr);
         });
         // Mobile cards
@@ -312,13 +346,21 @@
             card.innerHTML =
               '<div class="admin-enquiry-card-head"><div><p class="admin-enquiry-card-name">'+escapeHtml(row.name||'—')+'</p><p class="admin-enquiry-card-meta">'+escapeHtml(row.email||'—')+' · '+escapeHtml(row.service||'—')+'</p></div><span class="admin-status-badge status-'+st+'">'+escapeHtml(statusLabel(st))+'</span></div>' +
               '<p class="admin-enquiry-card-msg">'+escapeHtml(row.message||'—')+'</p>' +
-              '<div class="admin-enquiry-card-foot"><span>'+escapeHtml(created)+' · '+escapeHtml(row.phone||'—')+'</span><button class="admin-action-btn" data-view="'+row.id+'">View</button></div>';
+              '<div class="admin-enquiry-card-foot"><span>'+escapeHtml(created)+' · '+escapeHtml(row.phone||'—')+' · '+escapeHtml(row.budget||'Not provided')+'</span><button class="admin-action-btn" data-view="'+row.id+'" style="margin-right:8px;">View</button><select class="admin-filter" data-status="'+row.id+'" style="flex:1;min-width:120px;padding:6px 28px 6px 10px;font-size:11px;"><option value="new" '+(st==='new'?'selected':'')+'>New</option><option value="in-progress" '+(st==='in-progress'?'selected':'')+'>In Progress</option><option value="contacted" '+(st==='contacted'?'selected':'')+'>Contacted</option><option value="completed" '+(st==='completed'?'selected':'')+'>Completed</option><option value="archived" '+(st==='archived'?'selected':'')+'>Archived</option></select></div>';
             enquiryCards.appendChild(card);
           });
         }
         // Attach view handlers
         document.querySelectorAll('[data-view]').forEach(function(btn){
           btn.addEventListener('click', function(){ openModal(btn.getAttribute('data-view')); });
+        });
+        // Attach status change handlers
+        document.querySelectorAll('[data-status]').forEach(function(sel){
+          sel.addEventListener('change', function(){
+            const enquiryId = this.getAttribute('data-status');
+            const newStatus = this.value;
+            updateStatus(enquiryId, newStatus);
+          });
         });
       }
 
@@ -329,18 +371,25 @@
         document.getElementById('modalEmail').textContent = row.email || '—';
         document.getElementById('modalPhone').textContent = row.phone || '—';
         document.getElementById('modalService').textContent = row.service || '—';
+        document.getElementById('modalBudget').textContent = row.budget || 'Not provided';
         document.getElementById('modalDate').textContent = row.created_at ? new Date(row.created_at).toLocaleString() : '—';
-        document.getElementById('modalStatus').textContent = statusLabel(getStatus(row));
-        document.getElementById('modalStatus').className = 'admin-status-badge status-'+getStatus(row);
+        const st = getStatus(row);
+        document.getElementById('modalStatus').textContent = statusLabel(st);
+        document.getElementById('modalStatus').className = 'admin-status-badge status-'+st;
         document.getElementById('modalMessage').textContent = row.message || '—';
-        // Contact actions
+        // Set modal data for status update
+        modal.setAttribute('data-current-id', id);
+        if (modalStatusSelect) modalStatusSelect.value = st;
+        // Contact actions - open email composer instead of mailto
         if (modalEmailLink) {
           const email = (row.email || '').trim();
           if (email && email.includes('@')) {
-            modalEmailLink.href = 'mailto:' + encodeURIComponent(email);
             modalEmailLink.style.display = '';
+            // Pre-fill the email composer fields
+            document.getElementById('emailComposerTo').textContent = email;
+            document.getElementById('emailComposerSubject').value = 'Re: Enquiry ' + row.id;
+            document.getElementById('emailComposerBody').value = 'Dear ' + row.name + ',\n\nThank you for your interest in ' + row.service + ' service.\n\nI am writing regarding your enquiry (Reference: ' + row.id + ').\n\nIf you have any additional details or questions, please feel free to share.\n\nLooking forward to hearing from you.\n\nBest regards,\nRaymond Digital';
           } else {
-            modalEmailLink.href = 'mailto:';
             modalEmailLink.style.display = 'none';
           }
         }
@@ -356,11 +405,230 @@
             modalPhoneLink.style.display = 'none';
           }
         }
-        modal.classList.add('open'); modalBackdrop.classList.add('open'); modal.setAttribute('aria-hidden','false');
-        document.body.style.overflow='hidden';
+        modal.classList.add('open'); modalBackdrop.classList.add('open'); modal.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden';
+        // Open email composer when Email Client button is clicked
+        if (modalEmailLink) {
+          modalEmailLink.addEventListener('click', function(e){
+            e.preventDefault();
+            openEmailComposer(row);
+          });
+        }
       }
       function closeModal(){ modal.classList.remove('open'); modalBackdrop.classList.remove('open'); modal.setAttribute('aria-hidden','true'); document.body.style.overflow=''; }
       if (modal) modal.querySelectorAll('[data-close-modal]').forEach(function(btn){ btn.addEventListener('click', closeModal); });
+
+      // ------------------------------------------------------------
+      // Email Composer
+      // ------------------------------------------------------------
+      const emailComposerModal = document.getElementById('adminEmailComposer');
+      const emailComposerBackdrop = document.getElementById('adminEmailComposerBackdrop');
+      const emailComposerTo = document.getElementById('emailComposerTo');
+      const emailComposerSubject = document.getElementById('emailComposerSubject');
+      const emailComposerBody = document.getElementById('emailComposerBody');
+      const emailComposerStatus = document.getElementById('emailComposerStatus');
+      const emailComposerCancel = document.getElementById('emailComposerCancel');
+      const emailComposerSend = document.getElementById('emailComposerSend');
+
+      function openEmailComposer(row){
+        if (!row) return;
+        document.getElementById('emailComposerTitle').textContent = 'Email Client';
+        const email = (row.email || '').trim();
+        emailComposerTo.textContent = email || '—';
+        document.getElementById('emailComposerSubject').value = 'Re: Enquiry ' + row.id;
+        document.getElementById('emailComposerBody').value = 'Dear ' + row.name + ',\n\nThank you for your interest in ' + row.service + ' service.\n\nI am writing regarding your enquiry (Reference: ' + row.id + ').\n\nIf you have any additional details or questions, please feel free to share.\n\nLooking forward to hearing from you.\n\nBest regards,\nRaymond Digital';
+        emailComposerModal.classList.add('open'); emailComposerBackdrop.classList.add('open'); emailComposerModal.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden';
+      }
+
+      function closeEmailComposer(){
+        emailComposerModal.classList.remove('open'); emailComposerBackdrop.classList.remove('open'); emailComposerModal.setAttribute('aria-hidden','true'); document.body.style.overflow='';
+        resetEmailComposer();
+      }
+
+      function resetEmailComposer(){
+        if (emailComposerStatus) { emailComposerStatus.textContent = ''; emailComposerStatus.className = 'admin-email-status'; }
+        if (emailComposerSend) {
+          emailComposerSend.disabled = false;
+          const spinner = emailComposerSend.querySelector('.admin-spinner');
+          const btnText = emailComposerSend.querySelector('span:last-child');
+          if (spinner) spinner.style.display = 'none';
+          if (btnText) btnText.textContent = 'Send Email';
+        }
+        if (emailComposerSubject) emailComposerSubject.value = '';
+        if (emailComposerBody) emailComposerBody.value = '';
+      }
+
+      async function sendEmailViaBackend({ to, subject, body }) {
+        if (!raymondSupabase) return { success: false, error: 'Supabase client is not available.' };
+        const REQUEST_TIMEOUT_MS = 20000;
+        let timeoutId = null;
+        try {
+          const invokePromise = raymondSupabase.functions.invoke('send-email', {
+            body: { to, subject, body }
+          });
+          const timeoutPromise = new Promise((_, reject) => {
+            timeoutId = setTimeout(() => reject(new Error('Email request timed out. Please try again.')), REQUEST_TIMEOUT_MS);
+          });
+          const { data, error } = await Promise.race([invokePromise, timeoutPromise]);
+          if (error) {
+            return { success: false, error: error.message };
+          }
+          if (!data || data.success !== true) {
+            return {
+              success: false,
+              error: (data && data.error) || 'Unexpected response from mail service.'
+            };
+          }
+          return { success: true, data };
+        } catch (err) {
+          return { success: false, error: err.message || 'Unknown error from Gmail service.' };
+        } finally {
+          if (timeoutId) clearTimeout(timeoutId);
+        }
+      }
+
+      async function handleSendEmail(){
+        const to = emailComposerTo.textContent.trim();
+        const subject = emailComposerSubject.value.trim();
+        const body = emailComposerBody.value.trim();
+
+        if (!to || !subject || !body) {
+          if (emailComposerStatus) {
+            emailComposerStatus.textContent = 'Please fill in all fields (recipient, subject, and message).';
+            emailComposerStatus.className = 'admin-email-status show bad';
+            emailComposerStatus.style.display = '';
+          }
+          return;
+        }
+
+        // Show loading state
+        if (emailComposerSend) {
+          emailComposerSend.disabled = true;
+          const spinner = emailComposerSend.querySelector('.admin-spinner');
+          const btnText = emailComposerSend.querySelector('span:last-child');
+          if (spinner) spinner.style.display = 'inline-block';
+          if (btnText) btnText.textContent = 'Sending…';
+        }
+        if (emailComposerStatus) {
+          emailComposerStatus.textContent = 'Sending…';
+          emailComposerStatus.className = 'admin-email-status show';
+          emailComposerStatus.style.display = '';
+        }
+
+        try {
+          const result = await sendEmailViaBackend({ to, subject, body });
+          if (result.success) {
+            if (emailComposerStatus) {
+              emailComposerStatus.textContent = 'Email queued successfully.';
+              emailComposerStatus.className = 'admin-email-status show ok';
+              emailComposerStatus.style.display = '';
+            }
+            // Keep modal open but show success - admin can send another or close
+          } else {
+            if (emailComposerStatus) {
+              emailComposerStatus.textContent = result.error || 'Failed to send email.';
+              emailComposerStatus.className = 'admin-email-status show bad';
+              emailComposerStatus.style.display = '';
+            }
+          }
+        } catch (err) {
+          if (emailComposerStatus) {
+            emailComposerStatus.textContent = 'Error sending email. ' + (err.message || '');
+            emailComposerStatus.className = 'admin-email-status show bad';
+            emailComposerStatus.style.display = '';
+          }
+        } finally {
+          // Reset send button
+          if (emailComposerSend) {
+            emailComposerSend.disabled = false;
+            const spinner = emailComposerSend.querySelector('.admin-spinner');
+            const btnText = emailComposerSend.querySelector('span:last-child');
+            if (spinner) spinner.style.display = 'none';
+            if (btnText) btnText.textContent = 'Send Email';
+          }
+        }
+      }
+
+      // Event listeners
+      if (emailComposerCancel) emailComposerCancel.addEventListener('click', closeEmailComposer);
+      if (emailComposerSend) emailComposerSend.addEventListener('click', handleSendEmail);
+      if (emailComposerBackdrop) emailComposerBackdrop.addEventListener('click', function(e){ if(e.target===emailComposerBackdrop) closeEmailComposer(); });
+
+      // ------------------------------------------------------------
+      // Status update
+      // ------------------------------------------------------------
+      async function updateStatus(enquiryId, newStatus) {
+        if (!raymondSupabase) return false;
+        // Optimistic update: store old status for rollback
+        const idx = allEnquiries.findIndex(function(r){ return String(r.id) === String(enquiryId); });
+        const oldStatus = idx !== -1 ? allEnquiries[idx].status : null;
+        if (idx !== -1) allEnquiries[idx].status = newStatus;
+        renderEnquiries();
+        updateStatCounts();
+        const saveBtn = modalStatusSave;
+        const spinner = saveBtn ? saveBtn.querySelector('.admin-spinner') : null;
+        const btnText = saveBtn ? saveBtn.querySelector('span:last-child') : null;
+        if (saveBtn) { saveBtn.disabled = true; if (spinner) spinner.style.display = 'inline-block'; if (btnText) btnText.textContent = 'Saving…'; }
+        try {
+          const { error } = await raymondSupabase
+            .from('contact_messages')
+            .update({ status: newStatus })
+            .eq('id', enquiryId);
+          if (error) {
+            console.error('Raymond Digital: Status update error:', error);
+            // Rollback
+            if (idx !== -1 && oldStatus) allEnquiries[idx].status = oldStatus;
+            renderEnquiries();
+            updateStatCounts();
+            if (statusText) { statusText.textContent = 'Failed to update status. Please try again.'; statusText.className = 'admin-status-line show bad'; showElement(statusText); }
+            return false;
+          }
+          updateStatCounts();
+          if (statusText) { statusText.textContent = 'Status updated successfully.'; statusText.className = 'admin-status-line show ok'; showElement(statusText); }
+          return true;
+        } catch (err) {
+          console.error('Raymond Digital: Status update exception:', err);
+          // Rollback
+          if (idx !== -1 && oldStatus) allEnquiries[idx].status = oldStatus;
+          renderEnquiries();
+          updateStatCounts();
+          if (statusText) { statusText.textContent = 'Error updating status. See console for details.'; statusText.className = 'admin-status-line show bad'; showElement(statusText); }
+          return false;
+        } finally {
+          if (saveBtn) { saveBtn.disabled = false; if (spinner) spinner.style.display = 'none'; if (btnText) btnText.textContent = 'Save'; }
+        }
+      }
+
+      function renderEnquiriesAlias(){ renderEnquiries(); }
+
+      function updateStatCounts(){
+        let newCount = 0, inProgressCount = 0, contactedCount = 0, completedCount = 0, archivedCount = 0;
+        allEnquiries.forEach(function(row){
+          const st = (row.status || 'new').toLowerCase();
+          if (st === 'new') newCount++;
+          else if (st === 'in-progress') inProgressCount++;
+          else if (st === 'contacted') contactedCount++;
+          else if (st === 'completed') completedCount++;
+          else if (st === 'archived') archivedCount++;
+        });
+        if (newEnqEl) newEnqEl.textContent = newCount;
+        const inProgressEl = document.getElementById('inProgressEnquiries');
+        if (inProgressEl) inProgressEl.textContent = inProgressCount;
+        const contactedEl = document.getElementById('contactedEnquiries');
+        if (contactedEl) contactedEl.textContent = contactedCount;
+        const completedEl = document.getElementById('completedEnquiries');
+        if (completedEl) completedEl.textContent = completedCount;
+        const archivedEl = document.getElementById('archivedEnquiries');
+        if (archivedEl) archivedEl.textContent = archivedCount;
+      }
+
+      // Modal status save handler
+      if (modalStatusSave) {
+        modalStatusSave.addEventListener('click', function(){
+          const currentId = modal.getAttribute('data-current-id');
+          const newStatus = modalStatusSelect ? modalStatusSelect.value : null;
+          if (currentId && newStatus) updateStatus(currentId, newStatus);
+        });
+      }
       if (modalBackdrop) modalBackdrop.addEventListener('click', closeModal);
       document.addEventListener('keydown', function(e){ if(e.key==='Escape' && modal.classList.contains('open')) closeModal(); });
 
@@ -384,10 +652,8 @@
           }
           allEnquiries = data || [];
           const total = allEnquiries.length;
-          let newCount = 0;
-          allEnquiries.forEach(function(row){ if ((row.status || 'new') === 'new') newCount++; });
           if (totalEnqEl) totalEnqEl.textContent = total;
-          if (newEnqEl) newEnqEl.textContent = newCount;
+          updateStatCounts();
           const svcCount = new Set(allEnquiries.map(function(r){ return r.service; }).filter(Boolean)).size;
           const recentEl = document.getElementById('recentEnquiries');
           if (recentEl) recentEl.textContent = total ? new Date(allEnquiries[0].created_at).toLocaleDateString() : '—';
@@ -495,6 +761,11 @@
       </nav>
       <div class="admin-sidebar-footer">
         <div style="font-size:11px;color:#94A3B8;line-height:1.5;">Signed in as<br><strong style="color:#E2E8F0;font-size:12px;word-break:break-all;" id="adminUserEmail">admin</strong></div>
+        <!-- System responsiveness test -->
+        <button class="admin-nav-item" id="systemPingBtn" style="width:100%;padding:10px;font-size:12px;text-align:left;margin-top:4px;" type="button" aria-label="Test system responsiveness">
+          System Ping
+        </button>
+        <div id="systemPingResult" style="margin-top:6px;font-size:12px;color:var(--muted);"></div>
       </div>
     </aside>
 
@@ -529,7 +800,7 @@
           </div>
           <div class="admin-stat-card">
             <div style="flex:1;position:relative;z-index:1;">
-              <p class="admin-stat-label">New Enquiries</p>
+              <p class="admin-stat-label">New</p>
               <p class="admin-stat-value" id="newEnquiries">0</p>
               <p class="admin-stat-hint">Requires attention</p>
             </div>
@@ -537,19 +808,35 @@
           </div>
           <div class="admin-stat-card">
             <div style="flex:1;position:relative;z-index:1;">
-              <p class="admin-stat-label">Services</p>
-              <p class="admin-stat-value" id="serviceVariety">—</p>
-              <p class="admin-stat-hint">Distinct services</p>
+              <p class="admin-stat-label">In Progress</p>
+              <p class="admin-stat-value" id="inProgressEnquiries">0</p>
+              <p class="admin-stat-hint">Being worked on</p>
             </div>
-            <div class="admin-stat-icon admin-stat-icon--service">⬡</div>
+            <div class="admin-stat-icon admin-stat-icon--in-progress">⟳</div>
           </div>
           <div class="admin-stat-card">
             <div style="flex:1;position:relative;z-index:1;">
-              <p class="admin-stat-label">Latest</p>
-              <p class="admin-stat-value" id="recentEnquiries" style="font-size:18px;padding-top:6px;">—</p>
-              <p class="admin-stat-hint">Most recent enquiry</p>
+              <p class="admin-stat-label">Contacted</p>
+              <p class="admin-stat-value" id="contactedEnquiries">0</p>
+              <p class="admin-stat-hint">Client reached</p>
             </div>
-            <div class="admin-stat-icon admin-stat-icon--recent">◷</div>
+            <div class="admin-stat-icon admin-stat-icon--contacted">✉</div>
+          </div>
+          <div class="admin-stat-card">
+            <div style="flex:1;position:relative;z-index:1;">
+              <p class="admin-stat-label">Completed</p>
+              <p class="admin-stat-value" id="completedEnquiries">0</p>
+              <p class="admin-stat-hint">Done</p>
+            </div>
+            <div class="admin-stat-icon admin-stat-icon--completed">✓</div>
+          </div>
+          <div class="admin-stat-card">
+            <div style="flex:1;position:relative;z-index:1;">
+              <p class="admin-stat-label">Archived</p>
+              <p class="admin-stat-value" id="archivedEnquiries">0</p>
+              <p class="admin-stat-hint">Stored</p>
+            </div>
+            <div class="admin-stat-icon admin-stat-icon--archived">⎚</div>
           </div>
         </section>
 
@@ -593,6 +880,7 @@
                   <th>Email</th>
                   <th>Phone</th>
                   <th>Service</th>
+                  <th>Budget</th>
                   <th>Message</th>
                   <th>Date</th>
                   <th>Status</th>
@@ -640,12 +928,27 @@
           <div class="admin-detail"><label>Email</label><div id="modalEmail">—</div></div>
           <div class="admin-detail"><label>Phone</label><div id="modalPhone">—</div></div>
           <div class="admin-detail"><label>Service</label><div id="modalService">—</div></div>
+          <div class="admin-detail"><label>Estimated Budget</label><div id="modalBudget">—</div></div>
           <div class="admin-detail"><label>Date</label><div id="modalDate">—</div></div>
           <div class="admin-detail"><label>Status</label><div><span id="modalStatus" class="admin-status-badge status-new">NEW</span></div></div>
           <div class="admin-detail admin-detail--full"><label>Complete message</label><div id="modalMessage" class="admin-detail-msg">—</div></div>
           </div>
           <div class="admin-modal-actions" id="modalActions">
-            <a class="admin-action-btn--contact" id="modalEmailLink" href="mailto:" aria-label="Email client"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>Email Client</a>
+            <div class="admin-status-select-wrap" style="display:flex;align-items:center;gap:8px;flex:1;">
+              <label for="modalStatusSelect" style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">Status</label>
+              <select class="admin-filter" id="modalStatusSelect" aria-label="Change enquiry status" style="flex:1;min-width:160px;">
+                <option value="new">New</option>
+                <option value="in-progress">In Progress</option>
+                <option value="contacted">Contacted</option>
+                <option value="completed">Completed</option>
+                <option value="archived">Archived</option>
+              </select>
+              <button class="admin-btn-refresh" id="modalStatusSave" type="button" aria-label="Save status" style="padding:10px 14px;white-space:nowrap;">
+                <span class="admin-spinner" style="width:14px;height:14px;border:2px solid var(--line);border-top-color:var(--primary);border-radius:999px;display:none;animation:adminSpin .7s linear infinite;"></span>
+                <span>Save</span>
+              </button>
+            </div>
+            <button class="admin-action-btn--contact" id="modalEmailLink" type="button" aria-label="Email client"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>Email Client</button>
             <a class="admin-action-btn--contact" id="modalPhoneLink" href="tel:" aria-label="Call client"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.7c.43 2.06.7 4.08 1 6.02a2 2 0 0 1-.47 2.19L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.19-.47c1.94.3 3.96.57 6.02 1a2 2 0 0 1 1.7 2z"/></svg>Call Client</a>
             <button class="admin-action-btn--contact" data-close-modal aria-label="Close" style="margin-left:auto;">Close</button>
           </div>
@@ -654,6 +957,111 @@
     </div>
   </div>
 
+  <!-- Connect Gmail Account Button -->
+  <!-- Visible when Gmail is not yet connected; hidden after successful connection -->
+  <div id="gmailConnectWrapper" style="padding:16px; text-align:center; border-radius:12px; margin-bottom:24px; border:1px dashed var(--line);">
+    <button id="gmailConnectBtn" class="admin-btn-send" style="width:100%;" type="button" aria-label="Connect Gmail Account">
+      Connect Gmail Account
+    </button>
+    <p id="gmailConnectStatus" style="margin-top:8px; font-size:12px; color:var(--muted);"></p>
+  </div>
+
+  <!-- Email Composer Modal -->
+  <div class="admin-modal-backdrop" id="adminEmailComposerBackdrop" aria-hidden="true"></div>
+  <div class="admin-modal" id="adminEmailComposer" role="dialog" aria-modal="true" aria-labelledby="emailComposerTitle" aria-hidden="true">
+    <div class="admin-modal-card">
+      <div class="admin-modal-head">
+        <div>
+          <h3 id="emailComposerTitle">Email Client</h3>
+          <p>Compose an email directly from the dashboard</p>
+        </div>
+        <button class="admin-modal-close" data-close-email-composer aria-label="Close">✕</button>
+      </div>
+      <div class="admin-modal-body">
+        <div class="admin-email-composer-body">
+          <div class="admin-email-field">
+            <label for="emailComposerTo">Recipient</label>
+            <div class="admin-email-recipient" id="emailComposerTo">—</div>
+          </div>
+          <div class="admin-email-field">
+            <label for="emailComposerSubject">Subject</label>
+            <input class="admin-email-composer-input" type="text" id="emailComposerSubject" placeholder="Enter email subject..." autocomplete="off" />
+          </div>
+          <div class="admin-email-field">
+            <label for="emailComposerBody">Message</label>
+            <textarea class="admin-email-body" id="emailComposerBody" rows="6" placeholder="Write your message here..."></textarea>
+          </div>
+          <div class="admin-email-status" id="emailComposerStatus" role="status" aria-live="polite"></div>
+          <div class="admin-email-actions">
+            <button class="admin-action-btn--contact" id="emailComposerCancel" type="button">Cancel</button>
+            <button class="admin-btn-send" id="emailComposerSend" type="button">
+              <span class="admin-spinner"></span>
+              <span>Send Email</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script>document.addEventListener('DOMContentLoaded', function(){ var s=document.getElementById('adminUserEmail'); if(s && window.raymondSupabase){ window.raymondSupabase.auth.getUser().then(function(r){ if(r && r.data && r.data.user && r.data.user.email) s.textContent=r.data.user.email; }); } });</script>
+
+  <!-- System responsiveness test and Gmail connection -->
+  <script>
+    // Gmail OAuth initiation
+    const gmailConnectBtn = document.getElementById('gmailConnectBtn');
+    const gmailConnectStatus = document.getElementById('gmailConnectStatus');
+
+    if (gmailConnectBtn && gmailConnectStatus) {
+      gmailConnectBtn.addEventListener('click', function() {
+        gmailConnectStatus.textContent = 'Connecting to Google...';
+        gmailConnectStatus.style.color = '#64748B';
+        window.location.href =
+          'https://jirvxaavnlbbhblahbdj.supabase.co/functions/v1/gmail-auth';
+      });
+    }
+
+    // Check Gmail connection status on page load
+    setTimeout(function() {
+      if (!window.raymondSupabase || !gmailConnectBtn || !gmailConnectStatus) return;
+      gmailConnectStatus.textContent = 'Gmail Not Connected';
+      gmailConnectStatus.style.color = '#DC2626';
+      gmailConnectBtn.textContent = 'Connect Gmail Account';
+    }, 3000);
+
+    // System Ping functionality
+    const pingBtn = document.getElementById('systemPingBtn');
+    const pingResult = document.getElementById('systemPingResult');
+    if (pingBtn && pingResult && window.raymondSupabase) {
+      pingBtn.addEventListener('click', async function() {
+        pingBtn.disabled = true;
+        pingBtn.textContent = 'Testing connection...';
+        pingResult.textContent = '';
+        pingResult.className = 'admin-email-status';
+        const startTime = performance.now();
+        try {
+          const { data, error } = await window.raymondSupabase.auth.getUser();
+          const elapsedMs = Math.round(performance.now() - startTime);
+          if (error) {
+            pingResult.textContent = '\u2715 System connection failed';
+            pingResult.className = 'admin-email-status show bad';
+            pingResult.setAttribute('title', 'Authentication error: ' + (error.message || 'unknown'));
+          } else {
+            pingResult.textContent = '\u2713 System responsive \u2014 ' + elapsedMs + ' ms';
+            pingResult.className = 'admin-email-status show ok';
+          }
+        } catch (err) {
+          const elapsedMs = Math.round(performance.now() - startTime);
+          pingResult.textContent = '\u2715 System connection failed';
+          pingResult.className = 'admin-email-status show bad';
+          pingResult.setAttribute('title', 'Error: ' + (err.message || 'unknown'));
+          console.error('System ping error:', err);
+        } finally {
+          pingBtn.disabled = false;
+          pingBtn.textContent = 'System Ping';
+        }
+      });
+    }
+  </script>
 </body>
 </html>

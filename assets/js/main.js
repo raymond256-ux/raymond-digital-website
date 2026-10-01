@@ -49,13 +49,13 @@
      --------------------------------------------------------- */
   function onScroll() {
     const y = window.scrollY;
-    header.classList.toggle("scrolled", y > 10);
-    toTop.classList.toggle("visible", y > 600);
+    if (header) header.classList.toggle("scrolled", y > 10);
+    if (toTop) toTop.classList.toggle("visible", y > 600);
   }
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
 
-  toTop.addEventListener("click", () => {
+  if (toTop) toTop.addEventListener("click", () => {
     window.scrollTo({ top: 0, behavior: prefersReduced ? "auto" : "smooth" });
   });
 
@@ -63,17 +63,18 @@
      04. MOBILE HAMBURGER MENU
      --------------------------------------------------------- */
   function setMenu(open) {
+    if (!header || !navToggle) return;
     header.classList.toggle("menu-open", open);
     navToggle.setAttribute("aria-expanded", String(open));
     document.body.style.overflow = open && window.innerWidth <= 900 ? "hidden" : "";
   }
 
-  navToggle.addEventListener("click", () => {
+  if (navToggle) navToggle.addEventListener("click", () => {
     setMenu(!header.classList.contains("menu-open"));
   });
 
   // Close menu when a link is clicked or Escape is pressed
-  navMenu.addEventListener("click", (e) => {
+  if (navMenu) navMenu.addEventListener("click", (e) => {
     if (e.target.closest("a")) setMenu(false);
   });
   document.addEventListener("keydown", (e) => {
@@ -89,9 +90,10 @@
         entries.forEach((entry) => {
           if (!entry.isIntersecting) return;
           const id = entry.target.getAttribute("id");
-          navLinks.forEach((link) => {
-            link.classList.toggle("active", link.getAttribute("href") === "#" + id);
-          });
+          const link = navLinks.find((l) => l.getAttribute("href") === "#" + id);
+          if (link) {
+            navLinks.forEach((l) => l.classList.toggle("active", l === link));
+          }
         });
       },
       { rootMargin: "-45% 0px -50% 0px" }
@@ -208,6 +210,7 @@
   }
 
   function setError(input, show) {
+    if (!input) return;
     const field = input.closest(".field");
     const err = field ? field.querySelector(".err") : null;
     if (field) field.classList.toggle("invalid", show);
@@ -295,7 +298,7 @@
         email:   email.value.trim(),
         phone:   phone.value.trim(),
         service: service.value,
-        budget:  budget.value,
+        budget:  budget ? budget.value : "",
         message: message.value.trim()
       });
 
@@ -356,7 +359,9 @@
               email: enquiry.email,
               phone: enquiry.phone,
               service: enquiry.service,
-              message: enquiry.message
+              budget: enquiry.budget,
+              message: enquiry.message,
+              status: 'new'
             })
               .then(({ error }) => {
                 if (error) {
